@@ -61,27 +61,25 @@ module datapath (
 	wire [31:0] Result;
 	wire [3:0] RA1;
 	wire [3:0] RA2;
-	mux2 #(32) pcmux(
+	mux2 #(32) pcmux( //TODO: Cambiar luego del controller
 		.d0(PCPlus4),
-		.d1(Result),
-		.s(PCSrc),
+		.d1(Result), //ResultW
+		.s(PCSrc), //PCSrcW
 		.y(PCNext)
-	);
-	flopr #(32) pcreg(
-		.clk(clk),
-		.reset(reset),
-		.d(PCNext),
-		.q(PC)
-	);
+	);	
+		
+	flopenr #(2) pcreg( //Cambia a tipo ER
+	   .clk(clk),
+	   .reset(reset),
+	   .e(en), //TODO: Viene del Hazzard (Stall)F
+	   .d(PCNext),
+	   .q(PC)
+	   )
+	;
 	adder #(32) pcadd1(
 		.a(PC),
 		.b(32'b100),
 		.y(PCPlus4)
-	);
-	adder #(32) pcadd2(
-		.a(PCPlus4),
-		.b(32'b100),
-		.y(PCPlus8)
 	);
 	mux2 #(4) ra1mux(
 		.d0(Instr[19:16]),
@@ -102,7 +100,7 @@ module datapath (
 		.ra2(RA2),
 		.wa3(Instr[15:12]),
 		.wd3(Result),
-		.r15(PCPlus8),
+		.r15(PCPlus4), //Cambia, ya no va con pc+8 directamente
 		.rd1(SrcA),
 		.rd2(WriteData)
 	);

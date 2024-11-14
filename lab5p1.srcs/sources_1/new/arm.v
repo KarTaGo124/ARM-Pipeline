@@ -24,7 +24,7 @@ module arm (
 	clk,
 	reset,
 	PC,
-	Instr,
+	InstrD,
 	MemWrite,
 	ALUResult,
 	WriteData,
@@ -33,7 +33,7 @@ module arm (
 	input wire clk;
 	input wire reset;
 	output wire [31:0] PC;
-	input wire [31:0] Instr;
+	input wire [31:0] InstrD;
 	output wire MemWrite;
 	output wire [31:0] ALUResult;
 	output wire [31:0] WriteData;
@@ -49,7 +49,7 @@ module arm (
 	controller c(
 		.clk(clk),
 		.reset(reset),
-		.Instr(Instr[31:12]),
+		.Instr(InstrD[31:12]),
 		.ALUFlags(ALUFlags),
 		.RegSrc(RegSrc),
 		.RegWrite(RegWrite),
@@ -72,7 +72,7 @@ module arm (
 		.PCSrc(PCSrc),
 		.ALUFlags(ALUFlags),
 		.PC(PC),
-		.Instr(Instr),
+		.Instr(InstrD),
 		.ALUResult(ALUResult),
 		.WriteData(WriteData),
 		.ReadData(ReadData)
