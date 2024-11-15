@@ -61,12 +61,18 @@ module datapath (
 	wire [31:0] Result;
 	wire [3:0] RA1;
 	wire [3:0] RA2;
+	
+	    wire negclk; //Añadido del clock negado
+    assign negclk = ~clk;
+	
 	mux2 #(32) pcmux( //TODO: Cambiar luego del controller
 		.d0(PCPlus4),
 		.d1(Result), //ResultW
 		.s(PCSrc), //PCSrcW
 		.y(PCNext)
 	);	
+	
+
 		
 	flopenr #(2) pcreg( //Cambia a tipo ER
 	   .clk(clk),
@@ -94,38 +100,40 @@ module datapath (
 		.y(RA2)
 	);
 	regfile rf(
-		.clk(clk),
-		.we3(RegWrite),
+		.clk(negclk),
+		.we3(RegWrite),//TODO: Cambiar a RegWriteW 
 		.ra1(RA1),
 		.ra2(RA2),
-		.wa3(Instr[15:12]),
-		.wd3(Result),
+		.wa3(Instr[15:12]), //TODO: Cambiar de Instr[15:12] a WA3W, que viene del reg de escritura, que viene del reg de memoria, que viene del reg de execute que viene del Inst[15:12
+		.wd3(Result), //TODO: Cambiar a ResultW
 		.r15(PCPlus4), //Cambia, ya no va con pc+8 directamente
-		.rd1(SrcA),
-		.rd2(WriteData)
+		.rd1(SrcA), //TODO: Entrada regD-E
+		.rd2(WriteData) //TODO: Entrada regD-E
 	);
 	mux2 #(32) resmux(
-		.d0(ALUResult),
-		.d1(ReadData),
-		.s(MemtoReg),
-		.y(Result)
+		.d0(ALUResult), //TODO: Cambiar a ALUOutW
+		.d1(ReadData), //TODO: Cambiar a ReadDataW
+		.s(MemtoReg), //TODO: Cambiar a MemtoRegW 
+		.y(Result) //TODO: Cambiar a ResultW
 	);
 	extend ext(
 		.Instr(Instr[23:0]),
 		.ImmSrc(ImmSrc),
-		.ExtImm(ExtImm)
+		.ExtImm(ExtImm) //TODO: Pasar el Extend por el regD-E y sacarlo como ExtImmE
 	);
-	mux2 #(32) srcbmux(
+	//TODO: Falta generar un mux31, que tome RD1(SrcA), el valor de AluResultM que se da del regE-M y de ResultW, deberia generar SrcAE
+	//TODO: Falta generar un mux31, que tome R2(Writedata), el ResultW o el AluResultM, que se da del regE-M
+	mux2 #(32) srcbmux(//TODO: Se cambia Write data por el mux que esta atras de esta linea, y con entrade del ExtendImmE del regD-E
 		.d0(WriteData),
 		.d1(ExtImm),
 		.s(ALUSrc),
-		.y(SrcB)
+		.y(SrcB) //Cambiar a SrcBE
 	);
-	alu alu(
-		SrcA,
-		SrcB,
-		ALUControl,
-		ALUResult,
+	alu alu(//TODO: se cambia la entrada 
+		SrcA,  //Toma SrcAE
+		SrcB, //Toma SrcBE
+		ALUControl, //Se toma AluControlE
+		ALUResult, //La salida es AluResultE, que va al regE-M
 		ALUFlags
 	);
 endmodule
