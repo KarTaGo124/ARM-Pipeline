@@ -50,7 +50,7 @@ module top (
 		.rd(InstrF)
 	);
 	
-	flopenr #(2) regfd(
+	flopenr #(32) regfd(
 	   .clk(clk),
 	   .reset(clr), //TODO: Viene del Hazzard (Flush)
 	   .e(en), //TODO: Viene del Hazzard (Stall)
@@ -58,7 +58,6 @@ module top (
 	   .q(InstrD)
 	   )
 	;
-	
 	dmem dmem(
 		.clk(clk),
 		.we(MemWrite),

@@ -33,9 +33,9 @@ module datapath (
 	ALUFlags,
 	PC,
 	Instr,
-	ALUResult,
-	WriteData,
-	ReadData
+	ALUResultE,
+	WriteDataM,
+	ReadDataM
 );
 	input wire clk;
 	input wire reset;
@@ -49,32 +49,54 @@ module datapath (
 	output wire [3:0] ALUFlags;
 	output wire [31:0] PC;
 	input wire [31:0] Instr;
-	output wire [31:0] ALUResult;
-	output wire [31:0] WriteData;
-	input wire [31:0] ReadData;
+	output wire [31:0] ALUResultE;
+|
 	wire [31:0] PCNext;
 	wire [31:0] PCPlus4;
-	wire [31:0] PCPlus8;
-	wire [31:0] ExtImm;
-	wire [31:0] SrcA;
-	wire [31:0] SrcB;
-	wire [31:0] Result;
+	wire [31:0] ExtImmD;
+	wire [31:0] SrcAD;
+	wire [31:0] SrcBE;
+	wire [31:0] ResultW;
 	wire [3:0] RA1;
 	wire [3:0] RA2;
+
+	wire [99:0] ff_DE_Dp_in;
+	wire [99:0] ff_DE_Dp_out;
+
+	wire [67:0] ff_EM_Dp_in;
+	wire [67:0] ff_EM_Dp_out;
+
+	wire [67:0] ff_MW_Dp_in;
+	wire [67:0] ff_MW_Dp_out;
+
+	wire [31:0] ExtImmE;
+	wire [31:0] SrcAE;
+	wire [31:0] SrcAEM; //para el mux3
+	wire [31:0] WriteDataEM;
+	wire [31:0] WriteDataE;
+	wire [3:0] WA3E;
 	
-	    wire negclk; //Añadido del clock negado
+	//señales de hazard para los mux3
+	wire [1:0] ForwardBE;
+	wire [1:0] ForwardAE;
+    
+	wire [31:0] ALUOutM;
+	wire [31:0] WriteDataM;
+	wire [3:0] WA3M;
+	
+	input wire [31:0] ReadDataM;
+
+	wire negclk; //Añadido del clock negado
     assign negclk = ~clk;
 	
-	mux2 #(32) pcmux( //TODO: Cambiar luego del controller
+	mux2 #(32) pcmux(
 		.d0(PCPlus4),
-		.d1(Result), //ResultW
-		.s(PCSrc), //PCSrcW
+		.d1(ResultW),
+		.s(PCSrcW)
 		.y(PCNext)
 	);	
 	
-
-		
-	flopenr #(2) pcreg( //Cambia a tipo ER
+	flopenr #(2) pcreg(
 	   .clk(clk),
 	   .reset(reset),
 	   .e(en), //TODO: Viene del Hazzard (Stall)F
@@ -87,53 +109,107 @@ module datapath (
 		.b(32'b100),
 		.y(PCPlus4)
 	);
+
 	mux2 #(4) ra1mux(
 		.d0(Instr[19:16]),
 		.d1(4'b1111),
 		.s(RegSrc[0]),
 		.y(RA1)
 	);
+
 	mux2 #(4) ra2mux(
 		.d0(Instr[3:0]),
 		.d1(Instr[15:12]),
 		.s(RegSrc[1]),
 		.y(RA2)
 	);
+
 	regfile rf(
 		.clk(negclk),
-		.we3(RegWrite),//TODO: Cambiar a RegWriteW 
+		.we3(RegWriteW),
 		.ra1(RA1),
 		.ra2(RA2),
-		.wa3(Instr[15:12]), //TODO: Cambiar de Instr[15:12] a WA3W, que viene del reg de escritura, que viene del reg de memoria, que viene del reg de execute que viene del Inst[15:12
-		.wd3(Result), //TODO: Cambiar a ResultW
-		.r15(PCPlus4), //Cambia, ya no va con pc+8 directamente
-		.rd1(SrcA), //TODO: Entrada regD-E
-		.rd2(WriteData) //TODO: Entrada regD-E
+		.wa3(WA3W),
+		.wd3(ResultW),
+		.r15(PCPlus4),
+		.rd1(SrcAD), 
+		.rd2(WriteDataD)
 	);
-	mux2 #(32) resmux(
-		.d0(ALUResult), //TODO: Cambiar a ALUOutW
-		.d1(ReadData), //TODO: Cambiar a ReadDataW
-		.s(MemtoReg), //TODO: Cambiar a MemtoRegW 
-		.y(Result) //TODO: Cambiar a ResultW
-	);
+
 	extend ext(
 		.Instr(Instr[23:0]),
 		.ImmSrc(ImmSrc),
-		.ExtImm(ExtImm) //TODO: Pasar el Extend por el regD-E y sacarlo como ExtImmE
+		.ExtImm(ExtImmD)
 	);
-	//TODO: Falta generar un mux31, que tome RD1(SrcA), el valor de AluResultM que se da del regE-M y de ResultW, deberia generar SrcAE
-	//TODO: Falta generar un mux31, que tome R2(Writedata), el ResultW o el AluResultM, que se da del regE-M
-	mux2 #(32) srcbmux(//TODO: Se cambia Write data por el mux que esta atras de esta linea, y con entrade del ExtendImmE del regD-E
-		.d0(WriteData),
-		.d1(ExtImm),
+
+	assign ff_DE_Dp_in = {SrcAD, WriteDataD, Inst[15:12], ExtImmD};
+
+	flopr #(100) ff_DE_Dp(
+		.clk(clk),
+		.reset(reset),
+		.d(ff_DE_Dp_in),
+		.q(ff_DE_Dp_out)
+	);
+
+	assign {SrcAEM, WriteDataEM, WA3E, ExtImmE} = ff_DE_Dp_out;
+	
+	mux3 #(32) E1(
+		.d0(SrcAEM)
+		.d1(ResultW)
+		.d2(ALUOutM)
+		.s(ForwardAE)
+		.y(SrcAE) 
+	);
+	    
+	mux3 #(32) E2(
+		.d0(WriteDataEM)
+		.d1(ResultW)
+		.d2(ALUOutM)
+		.s(ForwardBE) // TODO: A 
+		.y(WriteDataE)
+		
+	);
+	mux2 #(32) srcbmux(
+		.d0(WriteDataE),
+		.d1(ExtImmE),
 		.s(ALUSrc),
-		.y(SrcB) //Cambiar a SrcBE
+		.y(SrcBE) 
 	);
-	alu alu(//TODO: se cambia la entrada 
-		SrcA,  //Toma SrcAE
-		SrcB, //Toma SrcBE
-		ALUControl, //Se toma AluControlE
-		ALUResult, //La salida es AluResultE, que va al regE-M
+
+	alu alu(
+		SrcAE,  
+		SrcBE, 
+		ALUControlE,
+		ALUResultE,
 		ALUFlags
 	);
+
+	assign ff_EM_Dp_in = {AluResultE, WriteDataE, WA3E};
+
+	flopr #(68) ff_EM_Dp(
+		.clk(clk),
+		.reset(reset),
+		.d(ff_EM_Dp_in),
+		.q(ff_EM_Dp_out)		
+	);
+	
+	assign {ALUOutM, WriteDataM, WA3M} = ff_EM_Dp_out;
+
+	assign ff_MW_Dp_in = {ReadDataM, ALUOutM, WA3M};
+
+	flopr #(68) ff_MW_Dp(
+		.clk(clk),
+		.reset(reset),
+		.d(ff_MW_Dp_in),
+		.q(ff_MW_Dp_out),
+	);
+	assign {ReadDataW, ALUOutW, WA3W} = ff_MW_Dp_out;
+	
+	mux2 #(32) resmux(
+		.d0(ALUOutW),
+		.d1(ReadDataW), 
+		.s(MemtoRegW), 
+		.y(ResultW) 
+	);
+	
 endmodule

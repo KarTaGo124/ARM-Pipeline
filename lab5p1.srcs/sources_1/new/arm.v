@@ -75,6 +75,6 @@ module arm (
 		.Instr(InstrD),
 		.ALUResult(ALUResult),
 		.WriteData(WriteData),
-		.ReadData(ReadData)
+		.ReadDataM(ReadData)
 	);
 endmodule
