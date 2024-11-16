@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module alu(input [31:0] SrcA, SrcB, input [1:0] ALUControl, output reg [31:0]  ALUResult, output wire [3:0] ALUFlags);
+module alu(input [31:0] SrcA, input [31:0] SrcB, input [1:0] ALUControl, output reg [31:0]  ALUResult, output wire [3:0] ALUFlags);
   
 wire neg, zero, carry, overflow;
 wire [31:0] condinvb;
