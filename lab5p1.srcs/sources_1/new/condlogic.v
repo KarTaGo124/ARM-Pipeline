@@ -31,7 +31,10 @@ module condlogic (
 	MemW,
 	PCSrc,
 	RegWrite,
-	MemWrite
+	MemWrite,
+	FlagsE,
+	BranchE,
+	NextFlags
 );
 	input wire clk;
 	input wire reset;
@@ -41,33 +44,39 @@ module condlogic (
 	input wire PCS;
 	input wire RegW;
 	input wire MemW;
+	input wire BranchE;
+	input wire [3:0] FlagsE;
 	output wire PCSrc;
 	output wire RegWrite;
 	output wire MemWrite;
+	output wire [3:0] NextFlags;
+	output wire BranchTakenE;
 	wire [1:0] FlagWrite;
-	wire [3:0] Flags;
+
 	wire CondEx;
 	flopenr #(2) flagreg1(
 		.clk(clk),
 		.reset(reset),
 		.en(FlagWrite[1]),
 		.d(ALUFlags[3:2]),
-		.q(Flags[3:2])
+		.q(NextFlags[3:2])
 	);
 	flopenr #(2) flagreg0(
 		.clk(clk),
 		.reset(reset),
 		.en(FlagWrite[0]),
 		.d(ALUFlags[1:0]),
-		.q(Flags[1:0])
+		.q(NextFlags[1:0])
 	);
 	condcheck cc(
 		.Cond(Cond),
-		.Flags(Flags),
+		.NextFlags(NextFlags),
 		.CondEx(CondEx)
 	);
 	assign FlagWrite = FlagW & {2 {CondEx}};
 	assign RegWrite = RegW & CondEx;
 	assign MemWrite = MemW & CondEx;
 	assign PCSrc = PCS & CondEx;
+	assign BranchTakenE = BranchE & CondEx;
+	
 endmodule

@@ -31,11 +31,12 @@ module datapath (
 	MemtoRegW,
 	PCSrcW,
 	ALUFlags,
-	PC, // TODO: CUAL PC? PCF O PCNEXT
+	PCF,
 	InstrD,
 	ALUResultE,
 	WriteDataM,
-	ReadDataM
+	ReadDataM,
+	BranchTakenE
 );
 	// Principal Signals
 	input wire clk;
@@ -46,6 +47,7 @@ module datapath (
 	wire [31:0] PCF; // PC that enter in Imem module and adder module
 	wire [31:0] PCMuxResult; // Result of the Mux between PCPlus4F-PCPlus8D and ResultW
 	wire [31:0] PCPlus4F;
+	input wire BranchTakenF; // Signal that comes from the controller
 
 	// Decode Signals
 	input wire [1:0] RegSrcD; // Selector Muxes before RegFile
@@ -55,8 +57,6 @@ module datapath (
 	wire [3:0] RA2D;
 
 	input wire [31:0] InstrD; // After FF
-
-	wire [31:0] PCPlus8D;
 	
 	wire [31:0] SrcAD;
 	wire [31:0] WriteDataD;
@@ -132,7 +132,7 @@ module datapath (
 		.y(BranchTakenE)
 	);	
 	
-	flopr #(32) pcreg(
+	flopenr #(32) pcimem(
 	   .clk(clk),
 	   .reset(reset),
 	   .en(~StallF), //TODO: Viene del Hazzard (StallF)
@@ -168,7 +168,7 @@ module datapath (
 		.ra2(RA2D),
 		.wa3(WA3W),
 		.wd3(ResultW),
-		.r15(PCPlus8D),
+		.r15(PCPlus4F),
 		.rd1(SrcAD), 
 		.rd2(WriteDataD)
 	);

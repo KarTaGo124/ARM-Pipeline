@@ -46,19 +46,21 @@ module arm (
 	wire [1:0] RegSrc;
 	wire [1:0] ImmSrc;
 	wire [1:0] ALUControl;
+	wire BranchTakenE;
 	controller c(
 		.clk(clk),
 		.reset(reset),
 		.Instr(Instr[31:12]),
 		.ALUFlags(ALUFlags),
 		.RegSrc(RegSrc),
-		.RegWrite(RegWrite),
+		.RegWriteW(RegWrite),
 		.ImmSrc(ImmSrc),
 		.ALUSrc(ALUSrc),
 		.ALUControl(ALUControl),
 		.MemWrite(MemWrite),
-		.MemtoReg(MemtoReg),
-		.PCSrc(PCSrc)
+		.MemtoRegW(MemtoReg),
+		.PCSrcW(PCSrc),
+		.BranchTakenE(BranchTakenE)
 	);
 	datapath dp(
 		.clk(clk),
@@ -75,6 +77,7 @@ module arm (
 		.InstrD(Instr),
 		.ALUResultE(ALUResult),
 		.WriteDataM(WriteData),
-		.ReadDataM(ReadData)
+		.ReadDataM(ReadData),
+		.BranchTakenE(BranchTakenE)
 	);
 endmodule

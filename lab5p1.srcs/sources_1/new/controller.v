@@ -25,55 +25,150 @@ module controller (
 	Instr,
 	ALUFlags,
 	RegSrc,
-	RegWrite,
+	RegWriteW,
 	ImmSrc,
 	ALUSrc,
 	ALUControl,
-	MemWrite,
-	MemtoReg,
-	PCSrc
+	MemWriteM,
+	MemtoRegW,
+	PCSrcW,
+	BranchTakenE
 );
 	input wire clk;
 	input wire reset;
 	input wire [31:12] Instr;
+
+	// decode 
+	wire PCSD; // pre cond logic
+	wire RegWD; // pre cond logic
+	wire MemWD; // pre cond logic
+	wire MemtoRegD; // salida de control unit
+	wire [1:0] ALUControlD; // salida de control unit
+	wire BranchD; // salida de control unit
+	wire ALUSrcD;  // salida de control unit
+	wire [1:0] FlagWD; // pre cond logic
+	wire [3:0] NextFlags; // TODO Extraer de conlogid para mandarlo al flip flop
+
+	wire [17:0] ff_control_1_in; //para el primer flip flop
+	wire [17:0] ff_control_1_out;
+
+	output wire [1:0] ImmSrcD;
+	output wire [1:0] RegSrcD;
+
+	// execute
+	wire PCSE;
+	wire RegWE;
+	wire MemWE;
+
+	wire PCSrcE;
+	wire RegWriteE;
+	wire MemWriteE;
+	
+	wire MemtoRegE;
+	wire [1:0] ALUControlE;
+	wire BranchE;
+	wire ALUSrcE;
+	wire [1:0] FlagWE;
+	wire [3:0] CondE;
+	wire [3:0] FlagsE;
+	output wire BranchTakenE;
+
+	// cond logic
 	input wire [3:0] ALUFlags;
-	output wire [1:0] RegSrc;
-	output wire RegWrite;
-	output wire [1:0] ImmSrc;
-	output wire ALUSrc;
-	output wire [1:0] ALUControl;
-	output wire MemWrite;
-	output wire MemtoReg;
-	output wire PCSrc;
-	wire [1:0] FlagW;
-	wire PCS;
-	wire RegW;
-	wire MemW;
+	wire [1:0] FlagWD;
+	wire PCSD;
+	wire RegWD;
+	wire MemWD;
+
+	//wires del segundo ff
+	wire [3:0] ff_control_2_in;
+	wire [3:0] ff_control_2_out;
+   
+    // memory
+	wire PCSrcM;
+	wire RegWriteM;
+	wire MemtoRegM;
+	output wire MemWriteM; 
+
+	//wires del tercer ff
+	wire [2:0] ff_control_3_in;
+	wire [2:0] ff_control_3_out;
+
+	// write
+    output wire PCSrcW;
+	output wire RegWriteW;
+	output wire MemtoRegW;
+	 
+	assign ff_control_1_in = {PCSD, RegWD, MemtoRegD, MemWD, ALUControlD, BranchD, ALUSrcD, FlagWD, Instr[31:28], NextFlags};
+
+		flopr #(18) ff_control_1(
+		.clk(clk),
+		.reset(reset),
+		.en(~StallF), //TODO: Viene del Hazzard (StallF)
+		.d(ff_control_1_in),
+	   .q(ff_control_1_out)
+	   )
+	;
+
+	assign {PCSE, RegWE, MemtoRegE, MemWE, ALUControlE, BranchE, ALUSrcE, FlagWE, CondE, FlagsE} = ff_control_1_out;	
+
+	
 	decode dec(
 		.Op(Instr[27:26]),
 		.Funct(Instr[25:20]),
 		.Rd(Instr[15:12]),
-		.FlagW(FlagW),
-		.PCS(PCS),
-		.RegW(RegW),
-		.MemW(MemW),
-		.MemtoReg(MemtoReg),
-		.ALUSrc(ALUSrc),
-		.ImmSrc(ImmSrc),
-		.RegSrc(RegSrc),
-		.ALUControl(ALUControl)
+		.PCSD(PCSD),
+		.RegWD(RegWD),
+		.MemtoRegD(MemtoRegD),
+		.MemWD(MemWD),
+		.ALUControlD(ALUControlD),
+		//TODO Implementar BranchD, que esta ya declarada internamente
+		.ALUSrcD(ALUSrcD),								
+		.FlagWD(FlagWD),
+		.ImmSrcD(ImmSrcD),
+		.RegSrcD(RegSrcD),
+		.Branch(BranchD)
 	);
+	
 	condlogic cl(
 		.clk(clk),
 		.reset(reset),
-		.Cond(Instr[31:28]),
+		.Cond(CondE),
 		.ALUFlags(ALUFlags),
-		.FlagW(FlagW),
-		.PCS(PCS),
-		.RegW(RegW),
-		.MemW(MemW),
-		.PCSrc(PCSrc),
-		.RegWrite(RegWrite),
-		.MemWrite(MemWrite)
+		.FlagW(FlagWE),
+		.NextFlags(NextFlags), //son los flags que salen 
+		.PCS(PCSE), 
+		.RegW(RegWE),
+		.MemW(MemWE),
+		.PCSrc(PCSrcE),
+		.RegWrite(RegWriteE),
+		.MemWrite(MemWriteE),
+		.FlagsE(FlagsE),
+		.BranchE(BranchE)
+		.BranchTakenE(Branch)
 	);
+	
+    assign ff_control_2_in = {PCSrcE, RegWriteE, MemtoRegE, MemWriteE};
+
+	flopr #(4) ff_control_2(
+	   .clk(clk),
+	   .reset(reset),
+	   .d(ff_control_2_in),
+	   .q(ff_control_2_out)
+	   )
+	;
+	
+    assign {PCSrcM, RegWriteM, MemtoRegM, MemWriteM} = ff_control_2_out;
+	
+	assign ff_control_3_in = {PCSrcM, RegWriteM, MemtoRegM};
+
+	flopr #(3) ff_control_3(
+	   .clk(clk),
+	   .reset(reset),
+	   .d(ff_control_3_in),
+	   .q(ff_control_3_out)
+	   )
+	;
+	assign {PCSrcW, RegWriteW, MemtoRegW} = ff_control_3_out;
+	
 endmodule
