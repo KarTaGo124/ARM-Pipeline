@@ -34,7 +34,7 @@ module condlogic (
 	MemWrite,
 	FlagsE,
 	BranchE,
-	NextFlags
+	NextFlags,
 	BranchTakenE
 );
 	input wire clk;
@@ -71,7 +71,7 @@ module condlogic (
 	);
 	condcheck cc(
 		.Cond(Cond),
-		.NextFlags(NextFlags),
+		.Flags(NextFlags),
 		.CondEx(CondEx)
 	);
 	assign FlagWrite = FlagW & {2 {CondEx}};

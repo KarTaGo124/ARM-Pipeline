@@ -27,8 +27,8 @@ module controller (
 	RegSrcD,
 	RegWriteW,
 	ImmSrcD,
-	ALUSrc,
-	ALUControl,
+	ALUSrcE,
+	ALUControlE,
 	MemWriteM,
 	MemtoRegW,
 	PCSrcW,
@@ -75,10 +75,6 @@ module controller (
 
 	// cond logic
 	input wire [3:0] ALUFlags;
-	wire [1:0] FlagWD;
-	wire PCSD;
-	wire RegWD;
-	wire MemWD;
 
 	//wires del segundo ff
 	wire [3:0] ff_control_2_in;
@@ -101,14 +97,13 @@ module controller (
 	 
 	assign ff_control_1_in = {PCSD, RegWD, MemtoRegD, MemWD, ALUControlD, BranchD, ALUSrcD, FlagWD, Instr[31:28], NextFlags};
 
-		flopr #(18) ff_control_1(
+	flopenr #(18) ff_control_1(
 		.clk(clk),
 		.reset(reset),
-		.en(~StallF), //TODO: Viene del Hazzard (StallF)
+		.en(1'b1), //TODO: Viene del Hazzard (StallF)
 		.d(ff_control_1_in),
 	   .q(ff_control_1_out)
-	   )
-	;
+	);
 
 	assign {PCSE, RegWE, MemtoRegE, MemWE, ALUControlE, BranchE, ALUSrcE, FlagWE, CondE, FlagsE} = ff_control_1_out;	
 
@@ -144,7 +139,7 @@ module controller (
 		.RegWrite(RegWriteE),
 		.MemWrite(MemWriteE),
 		.FlagsE(FlagsE),
-		.BranchE(BranchE)
+		.BranchE(BranchE),
 		.BranchTakenE(BranchTakenE)
 	);
 	
@@ -154,9 +149,8 @@ module controller (
 	   .clk(clk),
 	   .reset(reset),
 	   .d(ff_control_2_in),
-	   .q(ff_control_2_out)
-	   )
-	;
+	   .q(ff_control_2_out)   
+	);
 	
     assign {PCSrcM, RegWriteM, MemtoRegM, MemWriteM} = ff_control_2_out;
 	

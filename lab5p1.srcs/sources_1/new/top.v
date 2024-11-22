@@ -22,7 +22,7 @@
 module top (
 	clk,
 	reset,
-	WriteData,
+	WriteDataM,
 	DataAdr,
 	MemWrite
 );
@@ -52,8 +52,8 @@ module top (
 	
 	flopenr #(32) regfd(
 	   .clk(clk),
-	   .reset(FlushD), //TODO: Viene del Hazzard (FlushD)
-	   .e(~StallD), //TODO: Viene del Hazzard (StallD)
+	   .reset(reset), //TODO: Viene del Hazzard (FlushD)
+	   .en(1'b1), //TODO: Viene del Hazzard (StallD)
 	   .d(InstrF),  
 	   .q(InstrD)
 	   )

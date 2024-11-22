@@ -24,11 +24,11 @@ module arm (
 	clk,
 	reset,
 	PC,
-	InstrD,
+	Instr,
 	MemWrite,
 	ALUResult,
 	WriteData,
-	ReadData
+	ReadData,
 );
 	input wire clk;
 	input wire reset;
@@ -55,8 +55,8 @@ module arm (
 		.RegSrcD(RegSrc),
 		.RegWriteW(RegWrite),
 		.ImmSrcD(ImmSrc),
-		.ALUSrc(ALUSrc),
-		.ALUControl(ALUControl),
+		.ALUSrcE(ALUSrc),
+		.ALUControlE(ALUControl),
 		.MemWriteM(MemWrite),
 		.MemtoRegW(MemtoReg),
 		.PCSrcW(PCSrc),
@@ -73,11 +73,11 @@ module arm (
 		.MemtoRegW(MemtoReg),
 		.PCSrcW(PCSrc),
 		.ALUFlags(ALUFlags),
-		.PC(PC),
+		.PCF(PC),
 		.InstrD(Instr),
-		.ALUResultE(ALUResult),
 		.WriteDataM(WriteData),
 		.ReadDataM(ReadData),
-		.BranchTakenE(BranchTakenE)
+		.BranchTakenE(BranchTakenE),
+		.ALUResultM(ALUResult)
 	);
 endmodule

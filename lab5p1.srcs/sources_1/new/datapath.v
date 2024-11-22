@@ -33,10 +33,10 @@ module datapath (
 	ALUFlags,
 	PCF,
 	InstrD,
-	ALUResultE,
 	WriteDataM,
 	ReadDataM,
-	BranchTakenE
+	BranchTakenE,
+	ALUResultM
 );
 	// Principal Signals
 	input wire clk;
@@ -44,10 +44,10 @@ module datapath (
 
     // Fetch Signals
 	wire [31:0] PCNext; // Signal that enter to FF PC and output of the Mux
-	wire [31:0] PCF; // PC that enter in Imem module and adder module
+	output wire [31:0] PCF; // PC that enter in Imem module and adder module
 	wire [31:0] PCMuxResult; // Result of the Mux between PCPlus4F-PCPlus8D and ResultW
 	wire [31:0] PCPlus4F;
-	input wire BranchTakenF; // Signal that comes from the controller
+	input wire BranchTakenE; // Signal that comes from the controller
 
 	// Decode Signals
 	input wire [1:0] RegSrcD; // Selector Muxes before RegFile
@@ -65,10 +65,9 @@ module datapath (
 	// Execute Signals
 	input wire ALUSrcE; // Selector Mux before ALU
 	input wire [1:0] ALUControlE; // Selector ALU Module
-	input wire BranchTakenE // Selector Mux before FF PC
 
 	output wire [3:0] ALUFlags;
-	output wire [31:0] ALUResultE;
+	wire [31:0] ALUResultE;
 
 	wire [31:0] SrcAEM; //para el mux3
 	wire [31:0] WriteDataEM;
@@ -82,9 +81,11 @@ module datapath (
 
 	// Memory Signals
 	wire [31:0] ALUOutM;
-	wire [31:0] WriteDataM;
+	output wire [31:0] WriteDataM;
 	wire [3:0] WA3M;
-	input wire [31:0] ReadDataM;
+	output wire [31:0] ReadDataM;
+	
+	output wire [31:0] ALUResultM;
 
 
 	// Writeback Signals
@@ -120,7 +121,7 @@ module datapath (
 	mux2 #(32) pcmux1(
 		.d0(PCPlus4F),
 		.d1(ResultW),
-		.s(PCSrcW)
+		.s(PCSrcW),
 		.y(PCMuxResult)
 	);	
 
@@ -128,14 +129,14 @@ module datapath (
 	mux2 #(32) pcmux2(
 		.d0(PCMuxResult),
 		.d1(ALUResultE),
-		.s(BranchTakenE)
+		.s(BranchTakenE),
 		.y(PCNext)
 	);	
 	
 	flopenr #(32) pcimem(
 	   .clk(clk),
 	   .reset(reset),
-	   .en(~StallF), //TODO: Viene del Hazzard (StallF)
+	   .en(1'b1), //TODO: Viene del Hazzard (StallF)
 	   .d(PCNext),
 	   .q(PCF)
 	   )
@@ -174,7 +175,7 @@ module datapath (
 	);
 
 	extend ext(
-		.InstrD(InstrD[23:0]),
+		.Instr(InstrD[23:0]),
 		.ImmSrc(ImmSrcD),
 		.ExtImm(ExtImmD)
 	);
@@ -183,7 +184,7 @@ module datapath (
 
 	flopr #(100) ff_DE_Dp(
 		.clk(clk),
-		.reset(FlushE), // TODO: Hazard (FlushE)
+		.reset(reset), // TODO: Hazard (FlushE)
 		.d(ff_DE_Dp_in),
 		.q(ff_DE_Dp_out)
 	);
@@ -191,18 +192,18 @@ module datapath (
 	assign {SrcAEM, WriteDataEM, WA3E, ExtImmE} = ff_DE_Dp_out;
 	
 	mux3 #(32) E1(
-		.d0(SrcAEM)
-		.d1(ResultW)
-		.d2(ALUOutM)
-		.s(ForwardAE) // TODO: HAZARD
+		.d0(SrcAEM),
+		.d1(ResultW),
+		.d2(ALUOutM),
+		.s(2'b00), // TODO: HAZARD
 		.y(SrcAE) 
 	);
 	    
 	mux3 #(32) E2(
-		.d0(WriteDataEM)
-		.d1(ResultW)
-		.d2(ALUOutM)
-		.s(ForwardBE) // TODO: HAZARD
+		.d0(WriteDataEM),
+		.d1(ResultW),
+		.d2(ALUOutM),
+		.s(2'b00), // TODO: HAZARD
 		.y(WriteDataE)
 		
 	);
@@ -221,7 +222,7 @@ module datapath (
 		.ALUFlags(ALUFlags)
 	);
 
-	assign ff_EM_Dp_in = {AluResultE, WriteDataE, WA3E};
+	assign ff_EM_Dp_in = {ALUResultE, WriteDataE, WA3E};
 
 	flopr #(68) ff_EM_Dp(
 		.clk(clk),
@@ -238,7 +239,7 @@ module datapath (
 		.clk(clk),
 		.reset(reset),
 		.d(ff_MW_Dp_in),
-		.q(ff_MW_Dp_out),
+		.q(ff_MW_Dp_out)
 	);
 	assign {ReadDataW, ALUOutW, WA3W} = ff_MW_Dp_out;
 	
@@ -249,4 +250,5 @@ module datapath (
 		.y(ResultW) 
 	);
 	
+	assign ALUResultM = ALUOutM;
 endmodule
