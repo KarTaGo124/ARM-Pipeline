@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="94.924 ns"></ZoomEndTime>
-      <Cursor1Time time="163.335 ns"></Cursor1Time>
+      <ZoomStartTime time="167.370 ns"></ZoomStartTime>
+      <ZoomEndTime time="348.336 ns"></ZoomEndTime>
+      <Cursor1Time time="286.556 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="141"></NameColumnWidth>
-      <ValueColumnWidth column_width="99"></ValueColumnWidth>
+      <NameColumnWidth column_width="156"></NameColumnWidth>
+      <ValueColumnWidth column_width="182"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="5" />
+   <WVObjectSize size="11" />
    <wvobject fp_name="/testbench/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -39,6 +39,29 @@
    <wvobject fp_name="/testbench/dut/arm/ALUResult" type="array">
       <obj_property name="ElementShortName">ALUResult[31:0]</obj_property>
       <obj_property name="ObjectShortName">ALUResult[31:0]</obj_property>
-      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/c/cl/MemW" type="logic">
+      <obj_property name="ElementShortName">MemW</obj_property>
+      <obj_property name="ObjectShortName">MemW</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/c/MemtoRegD" type="logic">
+      <obj_property name="ElementShortName">MemtoRegD</obj_property>
+      <obj_property name="ObjectShortName">MemtoRegD</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/dp/WriteDataM" type="array">
+      <obj_property name="ElementShortName">WriteDataM[31:0]</obj_property>
+      <obj_property name="ObjectShortName">WriteDataM[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/InstrF" type="array">
+      <obj_property name="ElementShortName">InstrF[31:0]</obj_property>
+      <obj_property name="ObjectShortName">InstrF[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/InstrD" type="array">
+      <obj_property name="ElementShortName">InstrD[31:0]</obj_property>
+      <obj_property name="ObjectShortName">InstrD[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/dp/ReadDataM" type="array">
+      <obj_property name="ElementShortName">ReadDataM[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ReadDataM[31:0]</obj_property>
    </wvobject>
 </wave_config>

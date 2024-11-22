@@ -3,7 +3,7 @@
 May 22 2024
 19:03:11
 C:/Users/joaqu/Desktop/Arqui 24-2/Proyecto Final/ARM-Pipeline/lab5p1.sim/sim_1/behav/xsim/glbl.v,1731603759,verilog,,,,glbl,,,,,,,,
-C:/Users/joaqu/Desktop/Arqui 24-2/Proyecto Final/ARM-Pipeline/lab5p1.srcs/sim_1/new/testbench.v,1731603762,verilog,,,,testbench,,,,,,,,
+C:/Users/joaqu/Desktop/Arqui 24-2/Proyecto Final/ARM-Pipeline/lab5p1.srcs/sim_1/new/testbench.v,1732313835,verilog,,,,testbench,,,,,,,,
 C:/Users/joaqu/Desktop/Arqui 24-2/Proyecto Final/ARM-Pipeline/lab5p1.srcs/sources_1/new/adder.v,1731603763,verilog,,C:/Users/joaqu/Desktop/Arqui 24-2/Proyecto Final/ARM-Pipeline/lab5p1.srcs/sources_1/new/alu.v,,adder,,,,,,,,
 C:/Users/joaqu/Desktop/Arqui 24-2/Proyecto Final/ARM-Pipeline/lab5p1.srcs/sources_1/new/alu.v,1732205489,verilog,,C:/Users/joaqu/Desktop/Arqui 24-2/Proyecto Final/ARM-Pipeline/lab5p1.srcs/sources_1/new/arm.v,,alu,,,,,,,,
 C:/Users/joaqu/Desktop/Arqui 24-2/Proyecto Final/ARM-Pipeline/lab5p1.srcs/sources_1/new/arm.v,1732313960,verilog,,C:/Users/joaqu/Desktop/Arqui 24-2/Proyecto Final/ARM-Pipeline/lab5p1.srcs/sources_1/new/condcheck.v,,arm,,,,,,,,
@@ -16,8 +16,8 @@ C:/Users/joaqu/Desktop/Arqui 24-2/Proyecto Final/ARM-Pipeline/lab5p1.srcs/source
 C:/Users/joaqu/Desktop/Arqui 24-2/Proyecto Final/ARM-Pipeline/lab5p1.srcs/sources_1/new/extend.v,1732314041,verilog,,C:/Users/joaqu/Desktop/Arqui 24-2/Proyecto Final/ARM-Pipeline/lab5p1.srcs/sources_1/new/flopenr.v,,extend,,,,,,,,
 C:/Users/joaqu/Desktop/Arqui 24-2/Proyecto Final/ARM-Pipeline/lab5p1.srcs/sources_1/new/flopenr.v,1731603763,verilog,,C:/Users/joaqu/Desktop/Arqui 24-2/Proyecto Final/ARM-Pipeline/lab5p1.srcs/sources_1/new/flopr.v,,flopenr,,,,,,,,
 C:/Users/joaqu/Desktop/Arqui 24-2/Proyecto Final/ARM-Pipeline/lab5p1.srcs/sources_1/new/flopr.v,1731603763,verilog,,C:/Users/joaqu/Desktop/Arqui 24-2/Proyecto Final/ARM-Pipeline/lab5p1.srcs/sources_1/new/imem.v,,flopr,,,,,,,,
-C:/Users/joaqu/Desktop/Arqui 24-2/Proyecto Final/ARM-Pipeline/lab5p1.srcs/sources_1/new/imem.v,1731603762,verilog,,C:/Users/joaqu/Desktop/Arqui 24-2/Proyecto Final/ARM-Pipeline/lab5p1.srcs/sources_1/new/mux2.v,,imem,,,,,,,,
+C:/Users/joaqu/Desktop/Arqui 24-2/Proyecto Final/ARM-Pipeline/lab5p1.srcs/sources_1/new/imem.v,1732313091,verilog,,C:/Users/joaqu/Desktop/Arqui 24-2/Proyecto Final/ARM-Pipeline/lab5p1.srcs/sources_1/new/mux2.v,,imem,,,,,,,,
 C:/Users/joaqu/Desktop/Arqui 24-2/Proyecto Final/ARM-Pipeline/lab5p1.srcs/sources_1/new/mux2.v,1731603763,verilog,,C:/Users/joaqu/Desktop/Arqui 24-2/Proyecto Final/ARM-Pipeline/lab5p1.srcs/sources_1/new/mux3.v,,mux2,,,,,,,,
-,,,,C:/Users/joaqu/Desktop/Arqui 24-2/Proyecto Final/ARM-Pipeline/lab5p1.srcs/sources_1/new/regfile.v,,mux3,,,,,,,,
+C:/Users/joaqu/Desktop/Arqui 24-2/Proyecto Final/ARM-Pipeline/lab5p1.srcs/sources_1/new/mux3.v,1732311905,verilog,,C:/Users/joaqu/Desktop/Arqui 24-2/Proyecto Final/ARM-Pipeline/lab5p1.srcs/sources_1/new/regfile.v,,mux3,,,,,,,,
 C:/Users/joaqu/Desktop/Arqui 24-2/Proyecto Final/ARM-Pipeline/lab5p1.srcs/sources_1/new/regfile.v,1731603763,verilog,,C:/Users/joaqu/Desktop/Arqui 24-2/Proyecto Final/ARM-Pipeline/lab5p1.srcs/sources_1/new/top.v,,regfile,,,,,,,,
-C:/Users/joaqu/Desktop/Arqui 24-2/Proyecto Final/ARM-Pipeline/lab5p1.srcs/sources_1/new/top.v,1731603762,verilog,,C:/Users/joaqu/Desktop/Arqui 24-2/Proyecto Final/ARM-Pipeline/lab5p1.srcs/sim_1/new/testbench.v,,top,,,,,,,,
+C:/Users/joaqu/Desktop/Arqui 24-2/Proyecto Final/ARM-Pipeline/lab5p1.srcs/sources_1/new/top.v,1732313932,verilog,,C:/Users/joaqu/Desktop/Arqui 24-2/Proyecto Final/ARM-Pipeline/lab5p1.srcs/sim_1/new/testbench.v,,top,,,,,,,,
