@@ -124,12 +124,12 @@ module datapath (
 		.y(PCMuxResult)
 	);	
 
-	
+	//branch taken E
 	mux2 #(32) pcmux2(
 		.d0(PCMuxResult),
 		.d1(ALUResultE),
-		.s(PCSrcW)
-		.y(BranchTakenE)
+		.s(BranchTakenE)
+		.y(PCNext)
 	);	
 	
 	flopenr #(32) pcimem(
@@ -150,14 +150,14 @@ module datapath (
 	mux2 #(4) ra1mux(
 		.d0(InstrD[19:16]),
 		.d1(4'b1111),
-		.s(RegSrc[0]),
+		.s(RegSrcD[0]),
 		.y(RA1D)
 	);
 
 	mux2 #(4) ra2mux(
 		.d0(InstrD[3:0]),
 		.d1(InstrD[15:12]),
-		.s(RegSrc[1]),
+		.s(RegSrcD[1]),
 		.y(RA2D)
 	);
 

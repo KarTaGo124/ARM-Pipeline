@@ -35,6 +35,7 @@ module condlogic (
 	FlagsE,
 	BranchE,
 	NextFlags
+	BranchTakenE
 );
 	input wire clk;
 	input wire reset;

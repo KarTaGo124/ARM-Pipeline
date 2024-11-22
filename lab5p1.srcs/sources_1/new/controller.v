@@ -24,9 +24,9 @@ module controller (
 	reset,
 	Instr,
 	ALUFlags,
-	RegSrc,
+	RegSrcD,
 	RegWriteW,
-	ImmSrc,
+	ImmSrcD,
 	ALUSrc,
 	ALUControl,
 	MemWriteM,
@@ -65,9 +65,9 @@ module controller (
 	wire MemWriteE;
 	
 	wire MemtoRegE;
-	wire [1:0] ALUControlE;
+	output wire [1:0] ALUControlE;
 	wire BranchE;
-	wire ALUSrcE;
+	output wire ALUSrcE;
 	wire [1:0] FlagWE;
 	wire [3:0] CondE;
 	wire [3:0] FlagsE;
@@ -145,7 +145,7 @@ module controller (
 		.MemWrite(MemWriteE),
 		.FlagsE(FlagsE),
 		.BranchE(BranchE)
-		.BranchTakenE(Branch)
+		.BranchTakenE(BranchTakenE)
 	);
 	
     assign ff_control_2_in = {PCSrcE, RegWriteE, MemtoRegE, MemWriteE};
