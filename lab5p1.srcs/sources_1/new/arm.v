@@ -59,6 +59,12 @@ module arm (
 	wire [3:0] RA2D; //hazard
 	wire MemtoRegE; // controller
 
+	wire ForwardAE;
+	wire ForwardBE;
+	wire StallF;
+	wire StallD;
+	wire FlushE;
+
 	wire BranchTakenE;
 	controller c(
 		.clk(clk),
@@ -101,7 +107,32 @@ module arm (
         .WA3W_hazard(WA3W),
 		.WA3E_hazard(WA3E),
 		.RA1D_hazard(RA1D),
-		.RA2D_hazard(RA2D)
+		.RA2D_hazard(RA2D),
+		
+		.ForwardAE(ForwardAE),
+		.ForwardBE(ForwardBE),
+		.StallF(StallF),
+		.StallD(StallD),
+		.FlushE(FlushE)
 	);
+
+	hazard hz(
+		.RA1E(RA1E),
+		.RA2E(RA2E),
+		.WA3M(WA3M),
+		.WA3W(WA3W),
+		.RegWriteM(RegWriteM),
+		.RegWriteW(RegWriteW),
+		.WA3E(WA3E),
+		.RA1D(RA1D),
+		.RA2D(RA2D),
+		.MemtoRegE(MemtoRegE),
+
+		.ForwardAE(ForwardAE),
+		.ForwardBE(ForwardBE),
+		.StallF(StallF),
+		.StallD(StallD),
+		.FlushE(FlushE)
+	)
 
 endmodule

@@ -43,7 +43,13 @@ module datapath (
 	RA2E_hazard,
 	WA3E_hazard,
 	WA3M_hazard,
-	WA3W_hazard
+	WA3W_hazard,
+
+	ForwardAE,
+	ForwardBE
+	StallF,
+	StallD,
+	FlushE
 );
 	// Principal Signals
 	input wire clk;
@@ -128,6 +134,10 @@ module datapath (
 	output wire [3:0] WA3M_hazard;
 	output wire [3:0] WA3W_hazard;
 
+	//señales de hazard para los flip flops
+	input wire StallF;
+	input wire StallD;
+	input wire FlushE;
     
 	wire negclk; //Añadido del clock negado
     assign negclk = ~clk;
@@ -150,7 +160,7 @@ module datapath (
 	flopenr #(32) pcimem(
 	   .clk(clk),
 	   .reset(reset),
-	   .en(1'b1), //TODO: Viene del Hazzard (StallF)
+	   .en(StallF), //TODO: Viene del Hazzard (StallF)
 	   .d(PCNext),
 	   .q(PCF)
 	   )
@@ -165,8 +175,8 @@ module datapath (
     // TODO: ARREGLAR EL FLIP FLOP QUE MOVIMOS DE TOP HACIA DATAPATH
 	flopenr #(32) regfd(
 	   .clk(clk),
-	   .reset(reset), //TODO: Viene del Hazzard (FlushD)
-	   .en(1'b1), //TODO: Viene del Hazzard (StallD)
+	   .reset(FlushE), //TODO: Viene del Hazzard (FlushD)
+	   .en(~StallD), //TODO: Viene del Hazzard (StallD)
 	   .d(InstrF),  
 	   .q(InstrD)
 	   )
@@ -212,7 +222,7 @@ module datapath (
 
 	flopr #(100) ff_DE_Dp(
 		.clk(clk),
-		.reset(reset), // TODO: Hazard (FlushE)
+		.reset(FlushE), // TODO: Hazard (FlushE)
 		.d(ff_DE_Dp_in),
 		.q(ff_DE_Dp_out)
 	);
@@ -225,7 +235,7 @@ module datapath (
 		.d0(RA1E),
 		.d1(ResultW),
 		.d2(ALUOutM),
-		.s(2'b00), // TODO: HAZARD
+		.s(ForwardAE), // TODO: HAZARD
 		.y(SrcAE) 
 	);
 
@@ -235,7 +245,7 @@ module datapath (
 		.d0(RA2E),
 		.d1(ResultW),
 		.d2(ALUOutM),
-		.s(2'b00), // TODO: HAZARD
+		.s(ForwardBE), // TODO: HAZARD
 		.y(WriteDataE)
 	);
 
