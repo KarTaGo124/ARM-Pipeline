@@ -46,6 +46,19 @@ module arm (
 	wire [1:0] RegSrc;
 	wire [1:0] ImmSrc;
 	wire [1:0] ALUControl;
+	
+	//Wires del hazard
+	wire [31:0] RA1E;
+	wire [31:0] RA2E;
+	wire [3:0] WA3M;
+	wire [3:0] WA3W;
+	wire RegWriteM; //controller
+	wire RegWriteW; //controller
+	wire [3:0] WA3E: //hazard
+	wire [3:0] RA1D;//hazard
+	wire [3:0] RA2D; //hazard
+	wire MemtoRegE; // controller
+
 	wire BranchTakenE;
 	controller c(
 		.clk(clk),
@@ -60,7 +73,10 @@ module arm (
 		.MemWriteM(MemWrite),
 		.MemtoRegW(MemtoReg),
 		.PCSrcW(PCSrc),
-		.BranchTakenE(BranchTakenE)
+		.BranchTakenE(BranchTakenE), //hazard---
+		.RegWriteM_hazard(RegWriteM),
+		.RegWriteW_hazard(RegWriteW),
+		.MemtoRegE_hazard(MemtoRegE)
 	);
 	datapath dp(
 		.clk(clk),
@@ -74,10 +90,18 @@ module arm (
 		.PCSrcW(PCSrc),
 		.ALUFlags(ALUFlags),
 		.PCF(PC),
-		.InstrD(Instr),
+		.InstrF(Instr), // ahora entra el InstrF
 		.WriteDataM(WriteData),
 		.ReadDataM(ReadData),
 		.BranchTakenE(BranchTakenE),
-		.ALUResultM(ALUResult)
+		.ALUResultM(ALUResult), //hazard--
+		.RA1E_hazard(RA1E),
+	    .RA2E_hazard(RA2E),
+        .WA3M_hazard(WA3M),
+        .WA3W_hazard(WA3W),
+		.WA3E_hazard(WA3E),
+		.RA1D_hazard(RA1D),
+		.RA2D_hazard(RA2D)
 	);
+
 endmodule

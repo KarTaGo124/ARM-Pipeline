@@ -36,7 +36,14 @@ module datapath (
 	WriteDataM,
 	ReadDataM,
 	BranchTakenE,
-	ALUResultM
+	ALUResultM,
+	RA1D_hazard,
+	RA2D_hazard,
+	RA1E_hazard,
+	RA2E_hazard,
+	WA3E_hazard,
+	WA3M_hazard,
+	WA3W_hazard
 );
 	// Principal Signals
 	input wire clk;
@@ -69,8 +76,8 @@ module datapath (
 	output wire [3:0] ALUFlags;
 	wire [31:0] ALUResultE;
 
-	wire [31:0] SrcAEM; //para el mux3
-	wire [31:0] WriteDataEM;
+	wire [31:0] RA1E; //para el mux3
+	wire [31:0] RA2E; // para el otro mux3
 	wire [31:0] ExtImmE;
 	wire [3:0] WA3E;
 
@@ -113,8 +120,15 @@ module datapath (
 	//señales de hazard para los mux3
 	wire [1:0] ForwardBE;
 	wire [1:0] ForwardAE;
-    
+	output wire [3:0] RA1D_hazard;
+	output wire [3:0] RA2D_hazard;
+	output wire [31:0] RA1E_hazard;
+	output wire [31:0] RA2E_hazard;
+	output wire [3:0] WA3E_hazard;
+	output wire [3:0] WA3M_hazard;
+	output wire [3:0] WA3W_hazard;
 
+    
 	wire negclk; //Añadido del clock negado
     assign negclk = ~clk;
 
@@ -148,6 +162,16 @@ module datapath (
 		.y(PCPlus4F)
 	);
 
+    // TODO: ARREGLAR EL FLIP FLOP QUE MOVIMOS DE TOP HACIA DATAPATH
+	flopenr #(32) regfd(
+	   .clk(clk),
+	   .reset(reset), //TODO: Viene del Hazzard (FlushD)
+	   .en(1'b1), //TODO: Viene del Hazzard (StallD)
+	   .d(InstrF),  
+	   .q(InstrD)
+	   )
+	;
+
 	mux2 #(4) ra1mux(
 		.d0(InstrD[19:16]),
 		.d1(4'b1111),
@@ -155,12 +179,16 @@ module datapath (
 		.y(RA1D)
 	);
 
+	assign RA1D_hazard = RA1D;
+
 	mux2 #(4) ra2mux(
 		.d0(InstrD[3:0]),
 		.d1(InstrD[15:12]),
 		.s(RegSrcD[1]),
 		.y(RA2D)
 	);
+
+	assign RA2D_hazard = RA2D;
 
 	regfile rf(
 		.clk(negclk),
@@ -189,24 +217,30 @@ module datapath (
 		.q(ff_DE_Dp_out)
 	);
 
-	assign {SrcAEM, WriteDataEM, WA3E, ExtImmE} = ff_DE_Dp_out;
+	assign {RA1E, RA2E, WA3E, ExtImmE} = ff_DE_Dp_out;
+
+	assign WA3E_hazard = WA3E;
 	
 	mux3 #(32) E1(
-		.d0(SrcAEM),
+		.d0(RA1E),
 		.d1(ResultW),
 		.d2(ALUOutM),
 		.s(2'b00), // TODO: HAZARD
 		.y(SrcAE) 
 	);
+
+	assign RA1E_hazard = RA1E;
 	    
 	mux3 #(32) E2(
-		.d0(WriteDataEM),
+		.d0(RA2E),
 		.d1(ResultW),
 		.d2(ALUOutM),
 		.s(2'b00), // TODO: HAZARD
 		.y(WriteDataE)
-		
 	);
+
+	assign RA2E_hazard = RA2E;
+
 	mux2 #(32) srcbmux(
 		.d0(WriteDataE),
 		.d1(ExtImmE),
@@ -233,6 +267,8 @@ module datapath (
 	
 	assign {ALUOutM, WriteDataM, WA3M} = ff_EM_Dp_out;
 
+	assign WA3M_hazard = WA3M; // HAZARD
+
 	assign ff_MW_Dp_in = {ReadDataM, ALUOutM, WA3M};
 
 	flopr #(68) ff_MW_Dp(
@@ -242,6 +278,8 @@ module datapath (
 		.q(ff_MW_Dp_out)
 	);
 	assign {ReadDataW, ALUOutW, WA3W} = ff_MW_Dp_out;
+
+	assign WA3W_hazard = WA3W;
 	
 	mux2 #(32) resmux(
 		.d0(ALUOutW),

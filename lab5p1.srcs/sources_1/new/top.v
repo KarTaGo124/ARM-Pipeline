@@ -32,14 +32,13 @@ module top (
 	output wire [31:0] DataAdr;
 	output wire MemWrite;
 	wire [31:0] PCF;
-	wire [31:0] InstrF;
-	wire [31:0] InstrD;
+	wire [31:0] Instr;
 	wire [31:0] ReadDataM;
 	arm arm(
 		.clk(clk),
 		.reset(reset),
 		.PC(PCF),
-		.Instr(InstrD),
+		.Instr(Instr),
 		.MemWrite(MemWrite),
 		.ALUResult(DataAdr),
 		.WriteData(WriteDataM),
@@ -47,17 +46,9 @@ module top (
 	);
 	imem imem(
 		.a(PCF),
-		.rd(InstrF)
+		.rd(Instr)
 	);
 	
-	flopenr #(32) regfd(
-	   .clk(clk),
-	   .reset(reset), //TODO: Viene del Hazzard (FlushD)
-	   .en(1'b1), //TODO: Viene del Hazzard (StallD)
-	   .d(InstrF),  
-	   .q(InstrD)
-	   )
-	;
 	dmem dmem(
 		.clk(clk),
 		.we(MemWrite),
