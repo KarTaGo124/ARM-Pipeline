@@ -54,7 +54,7 @@ module arm (
 	wire [3:0] WA3W;
 	wire RegWriteM; //controller
 	wire RegWriteW; //controller
-	wire [3:0] WA3E: //hazard
+	wire [3:0] WA3E; //hazard
 	wire [3:0] RA1D;//hazard
 	wire [3:0] RA2D; //hazard
 	wire MemtoRegE; // controller
@@ -133,6 +133,6 @@ module arm (
 		.StallF(StallF),
 		.StallD(StallD),
 		.FlushE(FlushE)
-	)
+	);
 
 endmodule
