@@ -19,7 +19,6 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-
 module hazard(
     RA1E,
     RA2E,
@@ -66,8 +65,8 @@ module hazard(
     output wire StallF;
     output wire FlushD;
     output wire FlushE;
-    output wire ForwardAE;
-    output wire ForwardBE;
+    output reg [1:0] ForwardAE; 
+    output reg [1:0] ForwardBE;
 
     wire Match_1E_M;
     wire Match_2E_M;
@@ -84,7 +83,7 @@ module hazard(
     assign Match_1E_W = (RA1E == WA3W);
     assign Match_2E_W = (RA2E == WA3W);
 
-        always @(*) begin
+    always @(*) begin
         // ForwardAE logic
         if (Match_1E_M && RegWriteM)
             ForwardAE = 2'b10;
@@ -101,7 +100,6 @@ module hazard(
         else
             ForwardBE = 2'b00;
     end
-
 
     assign PCWrPendingF = PCSrcD | PCSrcE | PCSrcM;
     assign Match_12D_E = (RA1D == WA3E) | (RA2D == WA3E);

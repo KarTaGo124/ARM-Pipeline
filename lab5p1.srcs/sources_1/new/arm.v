@@ -28,8 +28,9 @@ module arm (
 	MemWrite,
 	ALUResult,
 	WriteData,
-	ReadData,
+	ReadData
 );
+	// Inputs and outputs
 	input wire clk;
 	input wire reset;
 	output wire [31:0] PC;
@@ -38,6 +39,8 @@ module arm (
 	output wire [31:0] ALUResult;
 	output wire [31:0] WriteData;
 	input wire [31:0] ReadData;
+
+	// Internal signals
 	wire [3:0] ALUFlags;
 	wire RegWrite;
 	wire ALUSrc;
@@ -46,25 +49,25 @@ module arm (
 	wire [1:0] RegSrc;
 	wire [1:0] ImmSrc;
 	wire [1:0] ALUControl;
-	
-	//Wires del hazard
+
+	// Hazard-related wires
 	wire [31:0] RA1E;
 	wire [31:0] RA2E;
 	wire [3:0] WA3M;
 	wire [3:0] WA3W;
-	wire RegWriteM; //controller
-	wire RegWriteW; //controller
-	wire [3:0] WA3E; //hazard
-	wire [3:0] RA1D;//hazard
-	wire [3:0] RA2D; //hazard
-	wire MemtoRegE; // controller
-	wire PCSrcD_h; //controller
-	wire PCSrcE_h; //controller
-	wire PCSrcM_h; //controller
-	wire PCSrcW_h; //controller
+	wire RegWriteM; //Controller
+	wire RegWriteW; //Controller
+	wire [3:0] WA3E; //Hazard
+	wire [3:0] RA1D; //Hazard
+	wire [3:0] RA2D; //Hazard
+	wire MemtoRegE; //Controller
+	wire PCSrcD_h; //Controller
+	wire PCSrcE_h; //Controller
+	wire PCSrcM_h; //Controller
+	wire PCSrcW_h; //Controller
 
-	wire ForwardAE;
-	wire ForwardBE;
+	wire [1:0] ForwardAE;
+	wire [1:0] ForwardBE;
 
 	wire StallF;
 	wire StallD;
@@ -72,6 +75,7 @@ module arm (
 	wire FlushD;
 
 	wire BranchTakenE;
+
 	controller c(
 		.clk(clk),
 		.reset(reset),
