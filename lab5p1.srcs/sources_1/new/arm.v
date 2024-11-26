@@ -58,12 +58,18 @@ module arm (
 	wire [3:0] RA1D;//hazard
 	wire [3:0] RA2D; //hazard
 	wire MemtoRegE; // controller
+	wire PCSrcD_h; //controller
+	wire PCSrcE_h; //controller
+	wire PCSrcM_h; //controller
+	wire PCSrcW_h; //controller
 
 	wire ForwardAE;
 	wire ForwardBE;
+
 	wire StallF;
 	wire StallD;
 	wire FlushE;
+	wire FlushD;
 
 	wire BranchTakenE;
 	controller c(
@@ -82,7 +88,11 @@ module arm (
 		.BranchTakenE(BranchTakenE), //hazard---
 		.RegWriteM_hazard(RegWriteM),
 		.RegWriteW_hazard(RegWriteW),
-		.MemtoRegE_hazard(MemtoRegE)
+		.MemtoRegE_hazard(MemtoRegE),
+		.PCSrcD_hazard(PCSrcD_h),
+		.PCSrcE_hazard(PCSrcE_h),
+		.PCSrcM_hazard(PCSrcM_h),
+		.PCSrcW_hazard(PCSrcW_h)
 	);
 	datapath dp(
 		.clk(clk),
@@ -117,22 +127,29 @@ module arm (
 	);
 
 	hazard hz(
-		.RA1E(RA1E),
-		.RA2E(RA2E),
-		.WA3M(WA3M),
-		.WA3W(WA3W),
-		.RegWriteM(RegWriteM),
-		.RegWriteW(RegWriteW),
-		.WA3E(WA3E),
-		.RA1D(RA1D),
-		.RA2D(RA2D),
-		.MemtoRegE(MemtoRegE),
+		.RA1E(RA1E), //Input Datapath
+		.RA2E(RA2E), //Input Datapath
+		.WA3M(WA3M), //Input Datapath
+		.WA3W(WA3W), //Input Datapath
+		.RA1D(RA1D), //Input Datapath
+		.WA3E(WA3E), //Input Datapath
+		.RA2D(RA2D), //Input Datapath
+		
+		.RegWriteM(RegWriteM), //Input Controller
+		.RegWriteW(RegWriteW), //Input Controller
+		.PCSrcD(PCSrcD_h), //Input Controller
+		.PCSrcE(PCSrcE_h), //Input Controller
+		.PCSrcM(PCSrcM_h), //Input Controller
+		.PCSrcW(PCSrcW_h), //Input Controller
+		.BranchTakenE(BranchTakenE), //Input Controller
+		.MemtoRegE(MemtoRegE), //Input Controller
 
-		.ForwardAE(ForwardAE),
-		.ForwardBE(ForwardBE),
+		.StallD(StallD), 
 		.StallF(StallF),
-		.StallD(StallD),
-		.FlushE(FlushE)
+		.FlushD(FlushD),
+		.FlushE(FlushE),
+		.ForwardAE(ForwardAE),
+		.ForwardBE(ForwardBE)
 	);
 
 endmodule

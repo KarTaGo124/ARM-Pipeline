@@ -46,7 +46,7 @@ module datapath (
 	WA3W_hazard,
 
 	ForwardAE,
-	ForwardBE
+	ForwardBE,
 	StallF,
 	StallD,
 	FlushE
@@ -124,8 +124,6 @@ module datapath (
 
 	
 	//señales de hazard para los mux3
-	wire [1:0] ForwardBE;
-	wire [1:0] ForwardAE;
 	output wire [3:0] RA1D_hazard;
 	output wire [3:0] RA2D_hazard;
 	output wire [31:0] RA1E_hazard;
@@ -138,6 +136,8 @@ module datapath (
 	input wire StallF;
 	input wire StallD;
 	input wire FlushE;
+	input wire [1:0] ForwardBE;
+	input wire [1:0] ForwardAE;
     
 	wire negclk; //Añadido del clock negado
     assign negclk = ~clk;

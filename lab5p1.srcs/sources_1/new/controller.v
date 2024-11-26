@@ -36,14 +36,18 @@ module controller (
 	// hazard
 	RegWriteM_hazard,
 	RegWriteW_hazard,
-	MemtoRegE_hazard
+	MemtoRegE_hazard,
+	PCSrcD_hazard,
+	PCSrcE_hazard,
+	PCSrcM_hazard,
+	PCSrcW_hazard
 );
 	input wire clk;
 	input wire reset;
 	input wire [31:12] Instr;
     
 	// decode 
-	wire PCSD; // pre cond logic
+	wire PCSD; // pre cond logic output
 	wire RegWD; // pre cond logic
 	wire MemWD; // pre cond logic
 	wire MemtoRegD; // salida de control unit
@@ -60,7 +64,7 @@ module controller (
 	output wire [1:0] RegSrcD;
 
 	// execute
-	wire PCSE;
+	wire PCSE; //Output
 	wire RegWE;
 	wire MemWE;
 
@@ -85,7 +89,7 @@ module controller (
 	wire [3:0] ff_control_2_out;
    
     // memory
-	wire PCSrcM;
+	wire PCSrcM; //Output
 	wire RegWriteM;
 	wire MemtoRegM;
 	output wire MemWriteM; 
@@ -95,7 +99,7 @@ module controller (
 	wire [2:0] ff_control_3_out;
 
 	// write
-    output wire PCSrcW;
+    output wire PCSrcW; //Output
 	output wire RegWriteW;
 	output wire MemtoRegW;
 	 
@@ -103,6 +107,10 @@ module controller (
     output wire RegWriteM_hazard;
 	output wire RegWriteW_hazard;
 	output wire MemtoRegE_hazard;
+	output wire PCSrcD_hazard;
+	output wire PCSrcE_hazard;
+	output wire PCSrcM_hazard;
+	output wire PCSrcW_hazard;
 
 	assign ff_control_1_in = {PCSD, RegWD, MemtoRegD, MemWD, ALUControlD, BranchD, ALUSrcD, FlagWD, Instr[31:28], NextFlags};
 
@@ -179,5 +187,10 @@ module controller (
 	assign {PCSrcW, RegWriteW, MemtoRegW} = ff_control_3_out;
 	
 	assign RegWriteW_hazard = RegWriteW;
+
+	assign PCSrcD_hazard = PCSD;
+	assign PCSrcE_hazard = PCSE;
+	assign PCSrcM_hazard = PCSrcM;
+	assign PCSrcW_hazard = PCSrcW;
 	
 endmodule
