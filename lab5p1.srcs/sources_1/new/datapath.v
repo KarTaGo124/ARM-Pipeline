@@ -32,7 +32,7 @@ module datapath (
 	PCSrcW,
 	ALUFlags,
 	PCF,
-	InstrD,
+	InstrF,
 	WriteDataM,
 	ReadDataM,
 	BranchTakenE,
@@ -44,11 +44,11 @@ module datapath (
 	WA3E_hazard,
 	WA3M_hazard,
 	WA3W_hazard,
-
 	ForwardAE,
 	ForwardBE,
 	StallF,
 	StallD,
+	FlushD,
 	FlushE
 );
 	// Principal Signals
@@ -61,6 +61,7 @@ module datapath (
 	wire [31:0] PCMuxResult; // Result of the Mux between PCPlus4F-PCPlus8D and ResultW
 	wire [31:0] PCPlus4F;
 	input wire BranchTakenE; // Signal that comes from the controller
+	input wire [31:0] InstrF; // Before FF
 
 	// Decode Signals
 	input wire [1:0] RegSrcD; // Selector Muxes before RegFile
@@ -69,7 +70,7 @@ module datapath (
 	wire [3:0] RA1D;
 	wire [3:0] RA2D;
 
-	input wire [31:0] InstrD; // After FF
+	wire [31:0] InstrD; // After FF
 	
 	wire [31:0] SrcAD;
 	wire [31:0] WriteDataD;
@@ -135,6 +136,7 @@ module datapath (
 	//señales de hazard para los flip flops
 	input wire StallF;
 	input wire StallD;
+	input wire FlushD;
 	input wire FlushE;
 	input wire [1:0] ForwardBE;
 	input wire [1:0] ForwardAE;
@@ -175,7 +177,7 @@ module datapath (
     // TODO: ARREGLAR EL FLIP FLOP QUE MOVIMOS DE TOP HACIA DATAPATH
 	flopenr #(32) regfd(
 	   .clk(clk),
-	   .reset(FlushE), //TODO: Viene del Hazzard (FlushD)
+	   .reset(FlushD), //TODO: Viene del Hazzard (FlushD)
 	   .en(~StallD), //TODO: Viene del Hazzard (StallD)
 	   .d(InstrF),  
 	   .q(InstrD)

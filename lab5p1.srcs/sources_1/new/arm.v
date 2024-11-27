@@ -122,11 +122,11 @@ module arm (
 		.WA3E_hazard(WA3E),
 		.RA1D_hazard(RA1D),
 		.RA2D_hazard(RA2D),
-		
 		.ForwardAE(ForwardAE),
 		.ForwardBE(ForwardBE),
 		.StallF(StallF),
 		.StallD(StallD),
+		.FlushD(FlushD),
 		.FlushE(FlushE)
 	);
 
