@@ -11,38 +11,22 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="167.370 ns"></ZoomStartTime>
-      <ZoomEndTime time="348.336 ns"></ZoomEndTime>
+      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="121.396 ns"></ZoomEndTime>
       <Cursor1Time time="286.556 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="156"></NameColumnWidth>
-      <ValueColumnWidth column_width="182"></ValueColumnWidth>
+      <ValueColumnWidth column_width="167"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="11" />
+   <WVObjectSize size="33" />
    <wvobject fp_name="/testbench/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
    </wvobject>
-   <wvobject fp_name="/testbench/reset" type="logic">
-      <obj_property name="ElementShortName">reset</obj_property>
-      <obj_property name="ObjectShortName">reset</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/MemWrite" type="logic">
-      <obj_property name="ElementShortName">MemWrite</obj_property>
-      <obj_property name="ObjectShortName">MemWrite</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/dut/arm/ReadData" type="array">
-      <obj_property name="ElementShortName">ReadData[31:0]</obj_property>
-      <obj_property name="ObjectShortName">ReadData[31:0]</obj_property>
-   </wvobject>
    <wvobject fp_name="/testbench/dut/arm/ALUResult" type="array">
       <obj_property name="ElementShortName">ALUResult[31:0]</obj_property>
       <obj_property name="ObjectShortName">ALUResult[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/dut/arm/c/cl/MemW" type="logic">
-      <obj_property name="ElementShortName">MemW</obj_property>
-      <obj_property name="ObjectShortName">MemW</obj_property>
    </wvobject>
    <wvobject fp_name="/testbench/dut/arm/c/MemtoRegD" type="logic">
       <obj_property name="ElementShortName">MemtoRegD</obj_property>
@@ -52,16 +36,120 @@
       <obj_property name="ElementShortName">WriteDataM[31:0]</obj_property>
       <obj_property name="ObjectShortName">WriteDataM[31:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/testbench/dut/InstrF" type="array">
-      <obj_property name="ElementShortName">InstrF[31:0]</obj_property>
-      <obj_property name="ObjectShortName">InstrF[31:0]</obj_property>
+   <wvobject fp_name="/testbench/dut/Instr" type="array">
+      <obj_property name="ElementShortName">Instr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">Instr[31:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/testbench/dut/InstrD" type="array">
-      <obj_property name="ElementShortName">InstrD[31:0]</obj_property>
-      <obj_property name="ObjectShortName">InstrD[31:0]</obj_property>
+   <wvobject fp_name="/testbench/dut/arm/hz/RA1E" type="array">
+      <obj_property name="ElementShortName">RA1E[31:0]</obj_property>
+      <obj_property name="ObjectShortName">RA1E[31:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/testbench/dut/arm/dp/ReadDataM" type="array">
-      <obj_property name="ElementShortName">ReadDataM[31:0]</obj_property>
-      <obj_property name="ObjectShortName">ReadDataM[31:0]</obj_property>
+   <wvobject fp_name="/testbench/dut/arm/hz/RA2E" type="array">
+      <obj_property name="ElementShortName">RA2E[31:0]</obj_property>
+      <obj_property name="ObjectShortName">RA2E[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/hz/WA3M" type="array">
+      <obj_property name="ElementShortName">WA3M[3:0]</obj_property>
+      <obj_property name="ObjectShortName">WA3M[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/hz/WA3W" type="array">
+      <obj_property name="ElementShortName">WA3W[3:0]</obj_property>
+      <obj_property name="ObjectShortName">WA3W[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/hz/RegWriteM" type="logic">
+      <obj_property name="ElementShortName">RegWriteM</obj_property>
+      <obj_property name="ObjectShortName">RegWriteM</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/hz/RegWriteW" type="logic">
+      <obj_property name="ElementShortName">RegWriteW</obj_property>
+      <obj_property name="ObjectShortName">RegWriteW</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/hz/PCSrcD" type="logic">
+      <obj_property name="ElementShortName">PCSrcD</obj_property>
+      <obj_property name="ObjectShortName">PCSrcD</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/hz/PCSrcE" type="logic">
+      <obj_property name="ElementShortName">PCSrcE</obj_property>
+      <obj_property name="ObjectShortName">PCSrcE</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/hz/PCSrcM" type="logic">
+      <obj_property name="ElementShortName">PCSrcM</obj_property>
+      <obj_property name="ObjectShortName">PCSrcM</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/hz/PCSrcW" type="logic">
+      <obj_property name="ElementShortName">PCSrcW</obj_property>
+      <obj_property name="ObjectShortName">PCSrcW</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/hz/BranchTakenE" type="logic">
+      <obj_property name="ElementShortName">BranchTakenE</obj_property>
+      <obj_property name="ObjectShortName">BranchTakenE</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/hz/MemtoRegE" type="logic">
+      <obj_property name="ElementShortName">MemtoRegE</obj_property>
+      <obj_property name="ObjectShortName">MemtoRegE</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/hz/RA1D" type="array">
+      <obj_property name="ElementShortName">RA1D[3:0]</obj_property>
+      <obj_property name="ObjectShortName">RA1D[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/hz/WA3E" type="array">
+      <obj_property name="ElementShortName">WA3E[3:0]</obj_property>
+      <obj_property name="ObjectShortName">WA3E[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/hz/RA2D" type="array">
+      <obj_property name="ElementShortName">RA2D[3:0]</obj_property>
+      <obj_property name="ObjectShortName">RA2D[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/hz/StallD" type="logic">
+      <obj_property name="ElementShortName">StallD</obj_property>
+      <obj_property name="ObjectShortName">StallD</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/hz/StallF" type="logic">
+      <obj_property name="ElementShortName">StallF</obj_property>
+      <obj_property name="ObjectShortName">StallF</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/hz/FlushD" type="logic">
+      <obj_property name="ElementShortName">FlushD</obj_property>
+      <obj_property name="ObjectShortName">FlushD</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/hz/FlushE" type="logic">
+      <obj_property name="ElementShortName">FlushE</obj_property>
+      <obj_property name="ObjectShortName">FlushE</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/hz/ForwardAE" type="array">
+      <obj_property name="ElementShortName">ForwardAE[1:0]</obj_property>
+      <obj_property name="ObjectShortName">ForwardAE[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/hz/ForwardBE" type="array">
+      <obj_property name="ElementShortName">ForwardBE[1:0]</obj_property>
+      <obj_property name="ObjectShortName">ForwardBE[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/hz/Match_1E_M" type="logic">
+      <obj_property name="ElementShortName">Match_1E_M</obj_property>
+      <obj_property name="ObjectShortName">Match_1E_M</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/hz/Match_2E_M" type="logic">
+      <obj_property name="ElementShortName">Match_2E_M</obj_property>
+      <obj_property name="ObjectShortName">Match_2E_M</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/hz/Match_1E_W" type="logic">
+      <obj_property name="ElementShortName">Match_1E_W</obj_property>
+      <obj_property name="ObjectShortName">Match_1E_W</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/hz/Match_2E_W" type="logic">
+      <obj_property name="ElementShortName">Match_2E_W</obj_property>
+      <obj_property name="ObjectShortName">Match_2E_W</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/hz/ldrStallD" type="logic">
+      <obj_property name="ElementShortName">ldrStallD</obj_property>
+      <obj_property name="ObjectShortName">ldrStallD</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/hz/PCWrPendingF" type="logic">
+      <obj_property name="ElementShortName">PCWrPendingF</obj_property>
+      <obj_property name="ObjectShortName">PCWrPendingF</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/hz/Match_12D_E" type="logic">
+      <obj_property name="ElementShortName">Match_12D_E</obj_property>
+      <obj_property name="ObjectShortName">Match_12D_E</obj_property>
    </wvobject>
 </wave_config>
