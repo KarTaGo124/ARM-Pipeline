@@ -35,7 +35,7 @@ module datapath (
 	InstrF,
 	WriteDataM,
 	ReadDataM,
-	BranchTakenE,
+	BranchTakenE, //TODO: Change to BranchPred
 	ALUResultM,
 	RA1D_hazard,
 	RA2D_hazard,
@@ -60,7 +60,7 @@ module datapath (
 	output wire [31:0] PCF; // PC that enter in Imem module and adder module
 	wire [31:0] PCMuxResult; // Result of the Mux between PCPlus4F-PCPlus8D and ResultW
 	wire [31:0] PCPlus4F;
-	input wire BranchTakenE; // Signal that comes from the controller
+	input wire BranchTakenE; // Signal that comes from the controller TODO Change to BranchPred
 	input wire [31:0] InstrF; // Before FF
 
 	// Decode Signals
@@ -155,14 +155,14 @@ module datapath (
 	mux2 #(32) pcmux2(
 		.d0(PCMuxResult),
 		.d1(ALUResultE),
-		.s(BranchTakenE),
+		.s(BranchTakenE), //TODO Change to BranchPred
 		.y(PCNext)
 	);	
 	
 	flopenr #(32) pcimem(
 	   .clk(clk),
 	   .reset(reset),
-	   .en(StallF), //TODO: Viene del Hazzard (StallF)
+	   .en(~StallF), 
 	   .d(PCNext),
 	   .q(PCF)
 	   )
@@ -174,11 +174,10 @@ module datapath (
 		.y(PCPlus4F)
 	);
 
-    // TODO: ARREGLAR EL FLIP FLOP QUE MOVIMOS DE TOP HACIA DATAPATH
 	flopenr #(32) regfd(
 	   .clk(clk),
-	   .reset(FlushD), //TODO: Viene del Hazzard (FlushD)
-	   .en(~StallD), //TODO: Viene del Hazzard (StallD)
+	   .reset(FlushD), //TODO Change to ~BranchPred
+	   .en(~StallD),
 	   .d(InstrF),  
 	   .q(InstrD)
 	   )
@@ -224,7 +223,7 @@ module datapath (
 
 	flopr #(100) ff_DE_Dp(
 		.clk(clk),
-		.reset(FlushE), // TODO: Hazard (FlushE)
+		.reset(FlushE), //TODO Change to ~BranchPred
 		.d(ff_DE_Dp_in),
 		.q(ff_DE_Dp_out)
 	);
@@ -237,7 +236,7 @@ module datapath (
 		.d0(RA1E),
 		.d1(ResultW),
 		.d2(ALUOutM),
-		.s(ForwardAE), // TODO: HAZARD
+		.s(ForwardAE), 
 		.y(SrcAE) 
 	);
 
@@ -247,7 +246,7 @@ module datapath (
 		.d0(RA2E),
 		.d1(ResultW),
 		.d2(ALUOutM),
-		.s(ForwardBE), // TODO: HAZARD
+		.s(ForwardBE), 
 		.y(WriteDataE)
 	);
 

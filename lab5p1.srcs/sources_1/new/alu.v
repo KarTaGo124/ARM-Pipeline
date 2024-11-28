@@ -19,8 +19,8 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-
-module alu(input [31:0] SrcA, input [31:0] SrcB, input [1:0] ALUControl, output reg [31:0]  ALUResult, output wire [3:0] ALUFlags);
+    
+module alu(input [31:0] SrcA, input [31:0] SrcB, input [3:0] ALUControl, output reg [31:0]  ALUResult, output wire [3:0] ALUFlags);
   
 wire neg, zero, carry, overflow;
 wire [31:0] condinvb;
@@ -31,10 +31,22 @@ assign sum = SrcA + condinvb + ALUControl[0];
   
 always @(*)
     begin
-        casex (ALUControl[1:0])
-            2'b0?: ALUResult = sum;
-            2'b10: ALUResult = SrcA & SrcB;
-            2'b11: ALUResult = SrcA | SrcB;
+        casex (ALUControl[3:0])
+            4'b000?: ALUResult = sum;
+            4'b0010: ALUResult = SrcA & SrcB;//and y tst
+            4'b0011: ALUResult = SrcA | SrcB;//orr
+            4'b0111: ALUResult = SrcA ^ SrcB;//eor xor
+            4'b1011: ALUResult = SrcA & ~SrcB;//bic
+            //operaciones
+            4'b0111: ALUResult = sum - carry;//sbc
+            4'b0111: ALUResult = SrcA ^ SrcB;//r
+            4'b0111: ALUResult = SrcA ^ SrcB;
+            4'b0111: ALUResult = SrcA ^ SrcB;
+            4'b0111: ALUResult = SrcA ^ SrcB;
+            4'b0111: ALUResult = SrcA ^ SrcB;
+            4'b0111: ALUResult = SrcA ^ SrcB;
+            4'b0111: ALUResult = SrcA ^ SrcB;
+           
         endcase
     end
 
@@ -42,6 +54,7 @@ assign neg = ALUResult[31];
 assign zero = (ALUResult == 32'b0);
 assign carry = (ALUControl[1] == 1'b0) & sum[32];
 assign overflow = (ALUControl[1] ==1'b0) & ~(SrcA[31] ^ SrcB[31] ^ ALUControl[0]) & (SrcA[31] ^ sum[31]);
+assign qflag = 
 
 assign ALUFlags = {neg, zero, carry, overflow};
 endmodule

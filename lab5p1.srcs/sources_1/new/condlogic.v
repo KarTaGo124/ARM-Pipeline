@@ -35,7 +35,8 @@ module condlogic (
 	FlagsE,
 	BranchE,
 	NextFlags,
-	BranchTakenE
+	BranchTakenE,
+	NoWrite
 );
 	input wire clk;
 	input wire reset;
@@ -47,6 +48,7 @@ module condlogic (
 	input wire MemW;
 	input wire BranchE;
 	input wire [3:0] FlagsE;
+	input wire NoWrite;
 	output wire PCSrc;
 	output wire RegWrite;
 	output wire MemWrite;
@@ -75,7 +77,7 @@ module condlogic (
 		.CondEx(CondEx)
 	);
 	assign FlagWrite = FlagW & {2 {CondEx}};
-	assign RegWrite = RegW & CondEx;
+	assign RegWrite = RegW & CondEx & ~NoWrite;
 	assign MemWrite = MemW & CondEx;
 	assign PCSrc = PCS & CondEx;
 	assign BranchTakenE = BranchE & CondEx;

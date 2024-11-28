@@ -75,6 +75,7 @@ module arm (
 	wire FlushD;
 
 	wire BranchTakenE;
+	//wire BranchPred;
 
 	controller c(
 		.clk(clk),
@@ -96,7 +97,9 @@ module arm (
 		.PCSrcD_hazard(PCSrcD_h),
 		.PCSrcE_hazard(PCSrcE_h),
 		.PCSrcM_hazard(PCSrcM_h),
-		.PCSrcW_hazard(PCSrcW_h)
+		.PCSrcW_hazard(PCSrcW_h),
+		.FlushE(FlushE)
+		//.BranchPred(BranchPred)
 	);
 	datapath dp(
 		.clk(clk),
@@ -113,7 +116,7 @@ module arm (
 		.InstrF(Instr), // ahora entra el InstrF
 		.WriteDataM(WriteData),
 		.ReadDataM(ReadData),
-		.BranchTakenE(BranchTakenE),
+		.BranchTakenE(BranchTakenE),//TODO Change to BranchPred
 		.ALUResultM(ALUResult), //hazard--
 		.RA1E_hazard(RA1E),
 	    .RA2E_hazard(RA2E),

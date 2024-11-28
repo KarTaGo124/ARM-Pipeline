@@ -12,12 +12,12 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="121.396 ns"></ZoomEndTime>
-      <Cursor1Time time="286.556 ns"></Cursor1Time>
+      <ZoomEndTime time="695.109 ns"></ZoomEndTime>
+      <Cursor1Time time="253.697 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="156"></NameColumnWidth>
-      <ValueColumnWidth column_width="167"></ValueColumnWidth>
+      <ValueColumnWidth column_width="162"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="33" />
    <wvobject fp_name="/testbench/clk" type="logic">
@@ -92,13 +92,13 @@
       <obj_property name="ElementShortName">RA1D[3:0]</obj_property>
       <obj_property name="ObjectShortName">RA1D[3:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/testbench/dut/arm/hz/WA3E" type="array">
-      <obj_property name="ElementShortName">WA3E[3:0]</obj_property>
-      <obj_property name="ObjectShortName">WA3E[3:0]</obj_property>
-   </wvobject>
    <wvobject fp_name="/testbench/dut/arm/hz/RA2D" type="array">
       <obj_property name="ElementShortName">RA2D[3:0]</obj_property>
       <obj_property name="ObjectShortName">RA2D[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/hz/WA3E" type="array">
+      <obj_property name="ElementShortName">WA3E[3:0]</obj_property>
+      <obj_property name="ObjectShortName">WA3E[3:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/testbench/dut/arm/hz/StallD" type="logic">
       <obj_property name="ElementShortName">StallD</obj_property>

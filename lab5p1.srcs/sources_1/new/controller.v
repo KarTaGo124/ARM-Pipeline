@@ -41,10 +41,13 @@ module controller (
 	PCSrcE_hazard,
 	PCSrcM_hazard,
 	PCSrcW_hazard
+	FlushE
+	//BranchPred
 );
 	input wire clk;
 	input wire reset;
 	input wire [31:12] Instr;
+	wire NoWrite;
     
 	// decode 
 	wire PCSD; // pre cond logic output
@@ -55,7 +58,7 @@ module controller (
 	wire BranchD; // salida de control unit
 	wire ALUSrcD;  // salida de control unit
 	wire [1:0] FlagWD; // pre cond logic
-	wire [3:0] NextFlags; // TODO Extraer de conlogid para mandarlo al flip flop
+	wire [3:0] NextFlags; 
 
 	wire [17:0] ff_control_1_in; //para el primer flip flop
 	wire [17:0] ff_control_1_out;
@@ -68,6 +71,8 @@ module controller (
 	wire RegWE;
 	wire MemWE;
 
+	input wire FlushE;
+
 	wire PCSrcE;
 	wire RegWriteE;
 	wire MemWriteE;
@@ -79,7 +84,9 @@ module controller (
 	wire [1:0] FlagWE;
 	wire [3:0] CondE;
 	wire [3:0] FlagsE;
-	output wire BranchTakenE;
+	output wire BranchTakenE; //BranchTakenE deberia pasar a ser input del predictor
+	//output wire BranchPred; //BranchPred deberia pasar a ser output del predictor
+
 
 	// cond logic
 	input wire [3:0] ALUFlags;
@@ -112,12 +119,13 @@ module controller (
 	output wire PCSrcM_hazard;
 	output wire PCSrcW_hazard;
 
+	
+
 	assign ff_control_1_in = {PCSD, RegWD, MemtoRegD, MemWD, ALUControlD, BranchD, ALUSrcD, FlagWD, Instr[31:28], NextFlags};
 
-	flopenr #(18) ff_control_1(
+	flopr #(18) ff_control_1(
 		.clk(clk),
-		.reset(reset),
-		.en(1'b1), //TODO: Viene del Hazzard (StallF)
+		.reset(FlushE), //TODO Change to ~BranchPred
 		.d(ff_control_1_in),
 	   .q(ff_control_1_out)
 	);
@@ -134,12 +142,12 @@ module controller (
 		.MemtoRegD(MemtoRegD),
 		.MemWD(MemWD),
 		.ALUControlD(ALUControlD),
-		//TODO Implementar BranchD, que esta ya declarada internamente
 		.ALUSrcD(ALUSrcD),								
 		.FlagWD(FlagWD),
 		.ImmSrcD(ImmSrcD),
 		.RegSrcD(RegSrcD),
-		.Branch(BranchD)
+		.Branch(BranchD),
+		.NoWrite(NoWrite)
 	);
 	
 	condlogic cl(
@@ -157,7 +165,8 @@ module controller (
 		.MemWrite(MemWriteE),
 		.FlagsE(FlagsE),
 		.BranchE(BranchE),
-		.BranchTakenE(BranchTakenE)
+		.BranchTakenE(BranchTakenE),
+		.NoWrite(NoWrite)
 	);
 	
     assign ff_control_2_in = {PCSrcE, RegWriteE, MemtoRegE, MemWriteE};
@@ -193,4 +202,13 @@ module controller (
 	assign PCSrcM_hazard = PCSrcM;
 	assign PCSrcW_hazard = PCSrcW;
 	
+/*
+	BranchPredictor bp(
+		.actualyTaken(BranchTakenE),
+		.clk(clk),
+		.reset(reset),
+		.predictTaken(BranchPred)
+	);
+*/
+
 endmodule
