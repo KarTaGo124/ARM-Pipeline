@@ -32,7 +32,7 @@ module controller (
 	MemWriteM,
 	MemtoRegW,
 	PCSrcW,
-	BranchTakenE,
+	//BranchTakenE,
 	// hazard
 	RegWriteM_hazard,
 	RegWriteW_hazard,
@@ -42,14 +42,14 @@ module controller (
 	PCSrcM_hazard,
 	PCSrcW_hazard,
 	FlushE,
-	ALUFlags_carry
-	//BranchPred
+	ALUFlags_carry,
+	BranchPred
 );
 	input wire clk;
 	input wire reset;
 	input wire [31:12] Instr;
 	wire NoWrite;
-    output wire [3:0] ALUFlags_carry; // para la instrucción con carry
+    output wire [3:0] ALUFlags_carry; // para la instrucciï¿½n con carry
 	// decode 
 	wire PCSD; // pre cond logic output
 	wire RegWD; // pre cond logic
@@ -85,8 +85,8 @@ module controller (
 	wire [1:0] FlagWE;
 	wire [3:0] CondE;
 	wire [3:0] FlagsE;
-	output wire BranchTakenE; //BranchTakenE deberia pasar a ser input del predictor
-	//output wire BranchPred; //BranchPred deberia pasar a ser output del predictor
+	wire BranchTakenE; //BranchTakenE deberia pasar a ser input del predictor
+	output wire BranchPred; //BranchPred deberia pasar a ser output del predictor
 
 
 	// cond logic
@@ -126,7 +126,7 @@ module controller (
 
 	flopr #(18) ff_control_1(
 		.clk(clk),
-		.reset(FlushE), //TODO Change to ~BranchPred
+		.reset(BranchPred),
 		.d(ff_control_1_in),
 	   .q(ff_control_1_out)
 	);
@@ -204,13 +204,12 @@ module controller (
 	assign PCSrcM_hazard = PCSrcM;
 	assign PCSrcW_hazard = PCSrcW;
 	
-/*
-	BranchPredictor bp(
+	branchPredictor bp(
 		.actualyTaken(BranchTakenE),
 		.clk(clk),
 		.reset(reset),
 		.predictTaken(BranchPred)
 	);
-*/
+
 
 endmodule

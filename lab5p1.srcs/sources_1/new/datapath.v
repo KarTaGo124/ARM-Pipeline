@@ -35,7 +35,7 @@ module datapath (
 	InstrF,
 	WriteDataM,
 	ReadDataM,
-	BranchTakenE, //TODO: Change to BranchPred
+	BranchPred,
 	ALUResultM,
 	RA1D_hazard,
 	RA2D_hazard,
@@ -62,7 +62,7 @@ module datapath (
 	output wire [31:0] PCF; // PC that enter in Imem module and adder module
 	wire [31:0] PCMuxResult; // Result of the Mux between PCPlus4F-PCPlus8D and ResultW
 	wire [31:0] PCPlus4F;
-	input wire BranchTakenE; // Signal that comes from the controller TODO Change to BranchPred
+	input wire BranchPred; // Signal that comes from the controller TODO Change to BranchPred
 	input wire [31:0] InstrF; // Before FF
 
 	// Decode Signals
@@ -126,7 +126,7 @@ module datapath (
 	wire [67:0] ff_MW_Dp_out;
 
 	
-	//señales de hazard para los mux3
+	//seï¿½ales de hazard para los mux3
 	output wire [3:0] RA1D_hazard;
 	output wire [3:0] RA2D_hazard;
 	output wire [31:0] RA1E_hazard;
@@ -135,7 +135,7 @@ module datapath (
 	output wire [3:0] WA3M_hazard;
 	output wire [3:0] WA3W_hazard;
 
-	//señales de hazard para los flip flops
+	//seï¿½ales de hazard para los flip flops
 	input wire StallF;
 	input wire StallD;
 	input wire FlushD;
@@ -143,7 +143,7 @@ module datapath (
 	input wire [1:0] ForwardBE;
 	input wire [1:0] ForwardAE;
     
-	wire negclk; //Añadido del clock negado
+	wire negclk; //Aï¿½adido del clock negado
     assign negclk = ~clk;
 
 	mux2 #(32) pcmux1(
@@ -157,7 +157,7 @@ module datapath (
 	mux2 #(32) pcmux2(
 		.d0(PCMuxResult),
 		.d1(ALUResultE),
-		.s(BranchTakenE), //TODO Change to BranchPred
+		.s(BranchPred),
 		.y(PCNext)
 	);	
 	

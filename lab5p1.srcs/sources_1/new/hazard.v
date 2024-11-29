@@ -30,7 +30,7 @@ module hazard(
     PCSrcE,
     PCSrcM,
     PCSrcW,
-    BranchTakenE,
+    BranchPred,
     MemtoRegE,    
     RA1D,
     WA3E, 
@@ -54,7 +54,7 @@ module hazard(
     input wire PCSrcE; //Controller
     input wire PCSrcM; //Controller
     input wire PCSrcW; //Controller
-    input wire BranchTakenE; //Controller
+    input wire BranchPred; //Controller
     input wire MemtoRegE; //Controller    
 
     input wire [3:0] RA1D; //Datapath
@@ -108,9 +108,9 @@ module hazard(
 
     assign StallF = ldrStallD | PCWrPendingF;
 
-    assign FlushD = PCWrPendingF | PCSrcW | BranchTakenE;
+    assign FlushD = PCWrPendingF | PCSrcW | BranchPred;
 
-    assign FlushE = ldrStallD | BranchTakenE;
+    assign FlushE = ldrStallD | BranchPred;
 
     assign StallD = ldrStallD;   
 

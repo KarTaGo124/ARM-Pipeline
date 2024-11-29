@@ -74,8 +74,17 @@ module decode (
 				//logica
 				4'b0000: ALUControlD = 4'b0010;//and
 				4'b0001: ALUControlD = 4'b0111;//eor xor
-				4'b1000: ALUControlD = 4'b0010;//tst // todo:gg
-				4'b1001: ALUControlD = 4'b0111;//teq // todo:gg
+				4'b1000: 
+					if (Funct[0])
+						ALUControlD = 4'b0010;//tst
+					else
+						ALUControlD = 4'b1110; //qadd
+
+				4'b1001:
+				    if (Funct[0])
+						ALUControlD = 4'b0111;//teq
+					else
+				 		ALUControlD = 4'b1111; // qsub
 				4'b1100: ALUControlD = 4'b0011;//orr
 				4'b1110: ALUControlD = 4'b1011;//bic
 
