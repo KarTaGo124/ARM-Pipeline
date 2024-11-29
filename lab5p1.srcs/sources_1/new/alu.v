@@ -37,7 +37,11 @@ assign adc = ALUFlags_carry[1];
 assign sra_neg = ~SrcA +1;
 assign condinvb = ALUControl[0] ? ~SrcB : SrcB;
 assign sum = SrcA + condinvb + ALUControl[0];
-  
+
+//para el q flag 
+
+wire q;
+
 always @(*)
     begin
         casex (ALUControl[3:0])
