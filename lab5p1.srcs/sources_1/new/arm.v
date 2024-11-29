@@ -75,7 +75,7 @@ module arm (
 	wire FlushD;
 
 	//wire BranchTakenE;
-	wire BranchPred;
+	wire BranchTakenE;
     
     
     //wire para el carry wazaa
@@ -94,7 +94,7 @@ module arm (
 		.MemWriteM(MemWrite),
 		.MemtoRegW(MemtoReg),
 		.PCSrcW(PCSrc),
-		//.BranchTakenE(BranchTakenE), //hazard---
+		.BranchTakenE(BranchTakenE), //hazard---
 		.RegWriteM_hazard(RegWriteM),
 		.RegWriteW_hazard(RegWriteW),
 		.MemtoRegE_hazard(MemtoRegE),
@@ -103,8 +103,8 @@ module arm (
 		.PCSrcM_hazard(PCSrcM_h),
 		.PCSrcW_hazard(PCSrcW_h),
 		.FlushE(FlushE),
-		.ALUFlags_carry(ALUFlags_carry), //para el carry
-		.BranchPred(BranchPred)
+		.ALUFlags_carry(ALUFlags_carry) //para el carry
+		//.BranchPred(BranchPred)
 	);
 	datapath dp(
 		.clk(clk),
@@ -121,7 +121,7 @@ module arm (
 		.InstrF(Instr), // ahora entra el InstrF
 		.WriteDataM(WriteData),
 		.ReadDataM(ReadData),
-		.BranchPred(BranchPred),//TODO Change to BranchPred
+		.BranchTakenE(BranchTakenE),//TODO Change to BranchPred
 		.ALUResultM(ALUResult), //hazard--
 		.RA1E_hazard(RA1E),
 	    .RA2E_hazard(RA2E),
@@ -154,7 +154,7 @@ module arm (
 		.PCSrcE(PCSrcE_h), //Input Controller
 		.PCSrcM(PCSrcM_h), //Input Controller
 		.PCSrcW(PCSrcW_h), //Input Controller
-		.BranchPred(BranchPred), //Input Controller
+		.BranchTakenE(BranchTakenE), //Input Controller
 		.MemtoRegE(MemtoRegE), //Input Controller
 
 		.StallD(StallD), 

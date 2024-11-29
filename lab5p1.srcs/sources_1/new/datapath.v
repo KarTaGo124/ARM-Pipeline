@@ -35,7 +35,7 @@ module datapath (
 	InstrF,
 	WriteDataM,
 	ReadDataM,
-	BranchPred,
+	BranchTakenE,
 	ALUResultM,
 	RA1D_hazard,
 	RA2D_hazard,
@@ -62,7 +62,7 @@ module datapath (
 	output wire [31:0] PCF; // PC that enter in Imem module and adder module
 	wire [31:0] PCMuxResult; // Result of the Mux between PCPlus4F-PCPlus8D and ResultW
 	wire [31:0] PCPlus4F;
-	input wire BranchPred; // Signal that comes from the controller TODO Change to BranchPred
+	input wire BranchTakenE; // Signal that comes from the controller TODO Change to BranchPred
 	input wire [31:0] InstrF; // Before FF
 
 	// Decode Signals
@@ -157,7 +157,7 @@ module datapath (
 	mux2 #(32) pcmux2(
 		.d0(PCMuxResult),
 		.d1(ALUResultE),
-		.s(BranchPred),
+		.s(BranchTakenE),
 		.y(PCNext)
 	);	
 	
