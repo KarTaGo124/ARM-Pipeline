@@ -49,12 +49,14 @@ module datapath (
 	StallF,
 	StallD,
 	FlushD,
-	FlushE
+	FlushE,
+	ALUFlags_carry // para el carry
 );
 	// Principal Signals
 	input wire clk;
 	input wire reset;
-
+    input wire [3:0]ALUFlags_carry; //para el carry
+    
     // Fetch Signals
 	wire [31:0] PCNext; // Signal that enter to FF PC and output of the Mux
 	output wire [31:0] PCF; // PC that enter in Imem module and adder module
@@ -78,7 +80,7 @@ module datapath (
 
 	// Execute Signals
 	input wire ALUSrcE; // Selector Mux before ALU
-	input wire [1:0] ALUControlE; // Selector ALU Module
+	input wire [3:0] ALUControlE; // Selector ALU Module
 
 	output wire [3:0] ALUFlags;
 	wire [31:0] ALUResultE;
@@ -124,7 +126,7 @@ module datapath (
 	wire [67:0] ff_MW_Dp_out;
 
 	
-	//seÃ±ales de hazard para los mux3
+	//señales de hazard para los mux3
 	output wire [3:0] RA1D_hazard;
 	output wire [3:0] RA2D_hazard;
 	output wire [31:0] RA1E_hazard;
@@ -133,7 +135,7 @@ module datapath (
 	output wire [3:0] WA3M_hazard;
 	output wire [3:0] WA3W_hazard;
 
-	//seÃ±ales de hazard para los flip flops
+	//señales de hazard para los flip flops
 	input wire StallF;
 	input wire StallD;
 	input wire FlushD;
@@ -141,7 +143,7 @@ module datapath (
 	input wire [1:0] ForwardBE;
 	input wire [1:0] ForwardAE;
     
-	wire negclk; //AÃ±adido del clock negado
+	wire negclk; //Añadido del clock negado
     assign negclk = ~clk;
 
 	mux2 #(32) pcmux1(
@@ -264,7 +266,8 @@ module datapath (
 		.SrcB(SrcBE), 
 		.ALUControl(ALUControlE),
 		.ALUResult(ALUResultE),
-		.ALUFlags(ALUFlags)
+		.ALUFlags(ALUFlags),
+		.ALUFlags_carry(ALUFlags_carry)
 	);
 
 	assign ff_EM_Dp_in = {ALUResultE, WriteDataE, WA3E};

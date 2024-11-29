@@ -80,16 +80,16 @@ module decode (
 				4'b1110: ALUControlD = 4'b1011;//bic
 
 				//operaciones
-				4'b0010: ALUControlD = 4'b01;//sub
-				4'b0110: ALUControlD = 4'b11;//sbc // todo:carry
-				4'b0011: ALUControlD = 4'b11;//rsb
-				4'b0111: ALUControlD = 4'b11;//rsc--- falta el orn y // todo:carry (bait)
-				4'b0100: ALUControlD = 4'b00;//add				
-				4'b0101: ALUControlD = 4'b11;//adc // todo:carry
-				4'b1010: ALUControlD = 4'b11;//cmp
-				4'b1011: ALUControlD = 4'b11;//cmn
+				4'b0010: ALUControlD = 4'b0001;//sub
+				4'b0110: ALUControlD = 4'b0101;//sbc // todo:carry
+				4'b0011: ALUControlD = 4'b0100;//rsb
+				4'b0111: ALUControlD = 4'b1000;//rsc--- falta el orn y // todo:carry (bait)
+				4'b0100: ALUControlD = 4'b0000;//add				
+				4'b0101: ALUControlD = 4'b1001;//adc // todo:carry
+				4'b1010: ALUControlD = 4'b0001;//cmp
+				4'b1011: ALUControlD = 4'b0000;//cmn
 
-
+                
 				4'b1101: ALUControlD = 4'b11;//shift
 				4'b1111: ALUControlD = 4'b11;//mvn
 

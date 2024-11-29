@@ -2,7 +2,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
-// 
+// f
 // Create Date: 10/31/2024 11:35:36 AM
 // Design Name: 
 // Module Name: alu
@@ -20,12 +20,21 @@
 //////////////////////////////////////////////////////////////////////////////////
 
     
-module alu(input [31:0] SrcA, input [31:0] SrcB, input [3:0] ALUControl, output reg [31:0]  ALUResult, output wire [3:0] ALUFlags);
+module alu(input [31:0] SrcA,
+ input [31:0] SrcB, input [3:0] ALUControl, 
+ output reg [31:0]  ALUResult, 
+ output wire [3:0] ALUFlags,
+ input wire [3:0] ALUFlags_carry);
   
 wire neg, zero, carry, overflow;
 wire [31:0] condinvb;
 wire [32:0] sum;
+wire [31:0] sra_neg; //para el rsb y rsc
+wire qflag; //para la bandera q
+wire adc;
+assign adc = ALUFlags_carry[1];
 
+assign sra_neg = ~SrcA +1;
 assign condinvb = ALUControl[0] ? ~SrcB : SrcB;
 assign sum = SrcA + condinvb + ALUControl[0];
   
@@ -38,14 +47,14 @@ always @(*)
             4'b0111: ALUResult = SrcA ^ SrcB;//eor xor
             4'b1011: ALUResult = SrcA & ~SrcB;//bic
             //operaciones
-            4'b0111: ALUResult = sum - carry;//sbc
-            4'b0111: ALUResult = SrcA ^ SrcB;//r
-            4'b0111: ALUResult = SrcA ^ SrcB;
-            4'b0111: ALUResult = SrcA ^ SrcB;
-            4'b0111: ALUResult = SrcA ^ SrcB;
-            4'b0111: ALUResult = SrcA ^ SrcB;
-            4'b0111: ALUResult = SrcA ^ SrcB;
-            4'b0111: ALUResult = SrcA ^ SrcB;
+            4'b0101: ALUResult = sum - ~adc;//sbc
+            4'b0100: ALUResult = sra_neg + SrcB;//rsb
+            4'b1000: ALUResult = sra_neg + SrcB - ~adc;  //rsc
+            4'b1001: ALUResult = sum + adc; //adc
+            //4'b0111: ALUResult = SrcA ^ SrcB;
+            //4'b0111: ALUResult = SrcA ^ SrcB;
+            //4'b0111: ALUResult = SrcA ^ SrcB;
+            //4'b0111: ALUResult = SrcA ^ SrcB;
            
         endcase
     end
@@ -54,13 +63,7 @@ assign neg = ALUResult[31];
 assign zero = (ALUResult == 32'b0);
 assign carry = (ALUControl[1] == 1'b0) & sum[32];
 assign overflow = (ALUControl[1] ==1'b0) & ~(SrcA[31] ^ SrcB[31] ^ ALUControl[0]) & (SrcA[31] ^ sum[31]);
-assign qflag = 
+//assign qflag = 
 
 assign ALUFlags = {neg, zero, carry, overflow};
 endmodule
-
-
-
-
-
-
