@@ -40,21 +40,22 @@ module controller (
 	PCSrcD_hazard,
 	PCSrcE_hazard,
 	PCSrcM_hazard,
-	PCSrcW_hazard
-	FlushE
+	PCSrcW_hazard,
+	FlushE,
+	ALUFlags_carry
 	//BranchPred
 );
 	input wire clk;
 	input wire reset;
 	input wire [31:12] Instr;
 	wire NoWrite;
-    
+    output wire [3:0] ALUFlags_carry; // para la instrucción con carry
 	// decode 
 	wire PCSD; // pre cond logic output
 	wire RegWD; // pre cond logic
 	wire MemWD; // pre cond logic
 	wire MemtoRegD; // salida de control unit
-	wire [1:0] ALUControlD; // salida de control unit
+	wire [3:0] ALUControlD; // salida de control unit
 	wire BranchD; // salida de control unit
 	wire ALUSrcD;  // salida de control unit
 	wire [1:0] FlagWD; // pre cond logic
@@ -78,7 +79,7 @@ module controller (
 	wire MemWriteE;
 	
 	wire MemtoRegE;
-	output wire [1:0] ALUControlE;
+	output wire [3:0] ALUControlE;
 	wire BranchE;
 	output wire ALUSrcE;
 	wire [1:0] FlagWE;
@@ -168,7 +169,8 @@ module controller (
 		.BranchTakenE(BranchTakenE),
 		.NoWrite(NoWrite)
 	);
-	
+	assign ALUFlags_carry= NextFlags;//para el carry
+	  
     assign ff_control_2_in = {PCSrcE, RegWriteE, MemtoRegE, MemWriteE};
     
     assign MemtoRegE_hazard = MemtoRegE;

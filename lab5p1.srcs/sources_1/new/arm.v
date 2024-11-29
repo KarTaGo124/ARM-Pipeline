@@ -48,7 +48,7 @@ module arm (
 	wire PCSrc;
 	wire [1:0] RegSrc;
 	wire [1:0] ImmSrc;
-	wire [1:0] ALUControl;
+	wire [3:0] ALUControl;
 
 	// Hazard-related wires
 	wire [31:0] RA1E;
@@ -76,7 +76,11 @@ module arm (
 
 	wire BranchTakenE;
 	//wire BranchPred;
-
+    
+    
+    //wire para el carry wazaa
+    wire [3:0]ALUFlags_carry; 
+    
 	controller c(
 		.clk(clk),
 		.reset(reset),
@@ -98,7 +102,8 @@ module arm (
 		.PCSrcE_hazard(PCSrcE_h),
 		.PCSrcM_hazard(PCSrcM_h),
 		.PCSrcW_hazard(PCSrcW_h),
-		.FlushE(FlushE)
+		.FlushE(FlushE),
+		.ALUFlags_carry(ALUFlags_carry) //para el carry
 		//.BranchPred(BranchPred)
 	);
 	datapath dp(
@@ -130,7 +135,8 @@ module arm (
 		.StallF(StallF),
 		.StallD(StallD),
 		.FlushD(FlushD),
-		.FlushE(FlushE)
+		.FlushE(FlushE),
+		.ALUFlags_carry(ALUFlags_carry) //para el carry
 	);
 
 	hazard hz(
