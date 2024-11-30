@@ -117,8 +117,8 @@ module datapath (
 	wire [31:0] ResultW;
 	
 	// Concatenated Signals for FFs
-	wire [99:0] ff_DE_Dp_in;
-	wire [99:0] ff_DE_Dp_out;
+	wire [107:0] ff_DE_Dp_in;
+	wire [107:0] ff_DE_Dp_out;
 
 	wire [67:0] ff_EM_Dp_in;
 	wire [67:0] ff_EM_Dp_out;
@@ -130,8 +130,8 @@ module datapath (
 	//se?ales de hazard para los mux3
 	output wire [3:0] RA1D_hazard;
 	output wire [3:0] RA2D_hazard;
-	output wire [31:0] RA1E_hazard;
-	output wire [31:0] RA2E_hazard;
+	output wire [3:0] RA1E_hazard;
+	output wire [3:0] RA2E_hazard;
 	output wire [3:0] WA3E_hazard;
 	output wire [3:0] WA3M_hazard;
 	output wire [3:0] WA3W_hazard;
@@ -179,7 +179,7 @@ module datapath (
 
 	flopenr #(32) regfd(
 	   .clk(clk),
-	   .reset(FlushD), //TODO Change to ~BranchPred
+	   .reset(0), //TODO Change to ~BranchPred
 	   .en(1),//-STALLD
 	   .d(InstrF),  
 	   .q(InstrD)
@@ -221,17 +221,20 @@ module datapath (
 		.ImmSrc(ImmSrcD),
 		.ExtImm(ExtImmD)
 	);
+	
+	wire [3:0] instructAuxD;
+	assign instructAuxD = InstrD[15:12];
 
-	assign ff_DE_Dp_in = {SrcAD, WriteDataD, InstrD[15:12], ExtImmD};
+	assign ff_DE_Dp_in = {RA1D, RA2D, SrcAD, WriteDataD, InstrD[15:12], ExtImmD};
 
-	flopr #(100) ff_DE_Dp(
+	flopr #(108) ff_DE_Dp(
 		.clk(clk),
 		.reset(FlushE), //TODO Change to ~BranchPred
 		.d(ff_DE_Dp_in),
 		.q(ff_DE_Dp_out)
 	);
 
-	assign {RA1E, RA2E, WA3E, ExtImmE} = ff_DE_Dp_out;
+	assign {RA1E_hazard, RA2E_hazard, RA1E, RA2E, WA3E, ExtImmE} = ff_DE_Dp_out;
 
 	assign WA3E_hazard = WA3E;
 	
@@ -243,7 +246,6 @@ module datapath (
 		.y(SrcAE) 
 	);
 
-	assign RA1E_hazard = RA1E;
 	    
 	mux3 #(32) E2(
 		.d0(RA2E),
@@ -252,8 +254,6 @@ module datapath (
 		.s(ForwardBE), 
 		.y(WriteDataE)
 	);
-
-	assign RA2E_hazard = RA2E;
 
 	mux2 #(32) srcbmux(
 		.d0(WriteDataE),

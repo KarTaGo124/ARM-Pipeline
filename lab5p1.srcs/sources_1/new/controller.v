@@ -53,16 +53,16 @@ module controller (
 	// decode 
 	wire PCSD; // pre cond logic output
 	wire RegWD; // pre cond logic
-	wire MemWD; // pre cond logic
 	wire MemtoRegD; // salida de control unit
+	wire MemWD; // pre cond logic
 	wire [3:0] ALUControlD; // salida de control unit
 	wire BranchD; // salida de control unit
 	wire ALUSrcD;  // salida de control unit
 	wire [1:0] FlagWD; // pre cond logic
 	wire [3:0] NextFlags; 
 
-	wire [17:0] ff_control_1_in; //para el primer flip flop
-	wire [17:0] ff_control_1_out;
+	wire [19:0] ff_control_1_in; //para el primer flip flop
+	wire [19:0] ff_control_1_out;
 
 	output wire [1:0] ImmSrcD;
 	output wire [1:0] RegSrcD;
@@ -70,7 +70,14 @@ module controller (
 	// execute
 	wire PCSE; //Output
 	wire RegWE;
+	wire MemtoRegE;
 	wire MemWE;
+	output wire [3:0] ALUControlE;
+	wire BranchE;
+	output wire ALUSrcE;
+	wire [1:0] FlagWE;
+	wire [3:0] CondE;
+	wire [3:0] FlagsE;
 
 	input wire FlushE;
 
@@ -78,13 +85,6 @@ module controller (
 	wire RegWriteE;
 	wire MemWriteE;
 	
-	wire MemtoRegE;
-	output wire [3:0] ALUControlE;
-	wire BranchE;
-	output wire ALUSrcE;
-	wire [1:0] FlagWE;
-	wire [3:0] CondE;
-	wire [3:0] FlagsE;
 	output wire BranchTakenE; //BranchTakenE deberia pasar a ser input del predictor
 	//output wire BranchPred; //BranchPred deberia pasar a ser output del predictor
 
@@ -138,16 +138,14 @@ module controller (
 	);
 
 	assign ff_control_1_in = {PCSD, RegWD, MemtoRegD, MemWD, ALUControlD, BranchD, ALUSrcD, FlagWD, Instr[31:28], NextFlags};
-    wire amongus;
-	flopr #(18) ff_control_1(
+	flopr #(20) ff_control_1(
 		.clk(clk),
 		.reset(BranchTakenE),
 		.d(ff_control_1_in),
 	   .q(ff_control_1_out)
 	);
 
-	assign {PCSE, amongus, MemtoRegE, MemWE, ALUControlE, BranchE, ALUSrcE, FlagWE, CondE, FlagsE} = ff_control_1_out;	
-    assign RegWE= RegWD;
+	assign {PCSE, RegWE, MemtoRegE, MemWE, ALUControlE, BranchE, ALUSrcE, FlagWE, CondE, FlagsE} = ff_control_1_out;
 	
 	
 	condlogic cl(

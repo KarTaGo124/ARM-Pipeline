@@ -43,8 +43,8 @@ module hazard(
     ForwardAE,
     ForwardBE
 );
-    input wire [31:0] RA1E; //Datapath
-    input wire [31:0] RA2E; //Datapath
+    input wire [3:0] RA1E; //Datapath
+    input wire [3:0] RA2E; //Datapath
     input wire [3:0] WA3M; //Datapath
     input wire [3:0] WA3W; //Datapath
     input wire RegWriteM; //Controller

@@ -73,7 +73,7 @@ module arm (
 	wire StallD;
 	wire FlushE;
 	wire FlushD;
-    wire [31:0]InstrD;//para el controller se pasa después del flip flop, no antes v:
+    wire [31:0]InstrD;//para el controller se pasa despuï¿½s del flip flop, no antes v:
 	//wire BranchTakenE;
 	wire BranchTakenE;
     

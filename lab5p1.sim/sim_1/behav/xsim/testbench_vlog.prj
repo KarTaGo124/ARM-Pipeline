@@ -3,7 +3,7 @@ verilog xil_defaultlib  \
 "../../../../lab5p1.srcs/sources_1/new/adder.v" \
 "../../../../lab5p1.srcs/sources_1/new/alu.v" \
 "../../../../lab5p1.srcs/sources_1/new/arm.v" \
-"../../../../lab5p1.srcs/sources_1/new/branchPredictor.v" \
+"../../../../lab5p1.srcs/sources_1/new/BranchPredictor.v" \
 "../../../../lab5p1.srcs/sources_1/new/condcheck.v" \
 "../../../../lab5p1.srcs/sources_1/new/condlogic.v" \
 "../../../../lab5p1.srcs/sources_1/new/controller.v" \
