@@ -120,20 +120,6 @@ module controller (
 	output wire PCSrcM_hazard;
 	output wire PCSrcW_hazard;
 
-	
-
-	assign ff_control_1_in = {PCSD, RegWD, MemtoRegD, MemWD, ALUControlD, BranchD, ALUSrcD, FlagWD, Instr[31:28], NextFlags};
-
-	flopr #(18) ff_control_1(
-		.clk(clk),
-		.reset(BranchTakenE),
-		.d(ff_control_1_in),
-	   .q(ff_control_1_out)
-	);
-
-	assign {PCSE, RegWE, MemtoRegE, MemWE, ALUControlE, BranchE, ALUSrcE, FlagWE, CondE, FlagsE} = ff_control_1_out;	
-
-	
 	decode dec(
 		.Op(Instr[27:26]),
 		.Funct(Instr[25:20]),
@@ -150,6 +136,19 @@ module controller (
 		.Branch(BranchD),
 		.NoWrite(NoWrite)
 	);
+
+	assign ff_control_1_in = {PCSD, RegWD, MemtoRegD, MemWD, ALUControlD, BranchD, ALUSrcD, FlagWD, Instr[31:28], NextFlags};
+    wire amongus;
+	flopr #(18) ff_control_1(
+		.clk(clk),
+		.reset(BranchTakenE),
+		.d(ff_control_1_in),
+	   .q(ff_control_1_out)
+	);
+
+	assign {PCSE, amongus, MemtoRegE, MemWE, ALUControlE, BranchE, ALUSrcE, FlagWE, CondE, FlagsE} = ff_control_1_out;	
+    assign RegWE= RegWD;
+	
 	
 	condlogic cl(
 		.clk(clk),
