@@ -73,7 +73,7 @@ module arm (
 	wire StallD;
 	wire FlushE;
 	wire FlushD;
-
+    wire [31:0]InstrD;//para el controller se pasa después del flip flop, no antes v:
 	//wire BranchTakenE;
 	wire BranchTakenE;
     
@@ -84,7 +84,7 @@ module arm (
 	controller c(
 		.clk(clk),
 		.reset(reset),
-		.Instr(Instr[31:12]),
+		.Instr(InstrD[31:12]), //bug
 		.ALUFlags(ALUFlags),
 		.RegSrcD(RegSrc),
 		.RegWriteW(RegWrite),
@@ -136,7 +136,8 @@ module arm (
 		.StallD(StallD),
 		.FlushD(FlushD),
 		.FlushE(FlushE),
-		.ALUFlags_carry(ALUFlags_carry) //para el carry
+		.ALUFlags_carry(ALUFlags_carry), //para el carry
+		.InstrD(InstrD)
 	);
 
 	hazard hz(

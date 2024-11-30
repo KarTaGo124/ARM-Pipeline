@@ -50,7 +50,8 @@ module datapath (
 	StallD,
 	FlushD,
 	FlushE,
-	ALUFlags_carry // para el carry
+	ALUFlags_carry, // para el carry
+    InstrD
 );
 	// Principal Signals
 	input wire clk;
@@ -72,7 +73,7 @@ module datapath (
 	wire [3:0] RA1D;
 	wire [3:0] RA2D;
 
-	wire [31:0] InstrD; // After FF
+	output wire [31:0] InstrD; // After FF
 	
 	wire [31:0] SrcAD;
 	wire [31:0] WriteDataD;
@@ -126,7 +127,7 @@ module datapath (
 	wire [67:0] ff_MW_Dp_out;
 
 	
-	//se�ales de hazard para los mux3
+	//se?ales de hazard para los mux3
 	output wire [3:0] RA1D_hazard;
 	output wire [3:0] RA2D_hazard;
 	output wire [31:0] RA1E_hazard;
@@ -135,7 +136,7 @@ module datapath (
 	output wire [3:0] WA3M_hazard;
 	output wire [3:0] WA3W_hazard;
 
-	//se�ales de hazard para los flip flops
+	//se?ales de hazard para los flip flops
 	input wire StallF;
 	input wire StallD;
 	input wire FlushD;
@@ -143,7 +144,7 @@ module datapath (
 	input wire [1:0] ForwardBE;
 	input wire [1:0] ForwardAE;
     
-	wire negclk; //A�adido del clock negado
+	wire negclk; //A?adido del clock negado
     assign negclk = ~clk;
 
 	mux2 #(32) pcmux1(
@@ -164,7 +165,7 @@ module datapath (
 	flopenr #(32) pcimem(
 	   .clk(clk),
 	   .reset(reset),
-	   .en(~StallF), 
+	   .en(~StallF), //-stallf
 	   .d(PCNext),
 	   .q(PCF)
 	   )
@@ -179,7 +180,7 @@ module datapath (
 	flopenr #(32) regfd(
 	   .clk(clk),
 	   .reset(FlushD), //TODO Change to ~BranchPred
-	   .en(~StallD),
+	   .en(1),//-STALLD
 	   .d(InstrF),  
 	   .q(InstrD)
 	   )

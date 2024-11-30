@@ -49,7 +49,7 @@ module controller (
 	input wire reset;
 	input wire [31:12] Instr;
 	wire NoWrite;
-    output wire [3:0] ALUFlags_carry; // para la instrucci�n con carry
+    output wire [3:0] ALUFlags_carry; // para la instrucci?n con carry
 	// decode 
 	wire PCSD; // pre cond logic output
 	wire RegWD; // pre cond logic
@@ -204,7 +204,7 @@ module controller (
 	assign PCSrcM_hazard = PCSrcM;
 	assign PCSrcW_hazard = PCSrcW;
 	
-	branchPredictor bp(
+	BranchPredictor bp(
 		.actualyTaken(BranchTakenE),
 		.clk(clk),
 		.reset(reset),
