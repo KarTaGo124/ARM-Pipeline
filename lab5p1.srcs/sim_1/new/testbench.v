@@ -25,7 +25,10 @@ module testbench;
 	wire [31:0] WriteDataM;
 	wire [31:0] DataAdr;
 	wire MemWrite;
-	wire sw;
+	 reg sw;
+    initial begin //para que no haya conflicto   con el waveform
+     sw<=1;
+    end
 	top dut(
 		.clk(clk),
 		.reset(reset),
