@@ -25,12 +25,14 @@ module testbench;
 	wire [31:0] WriteDataM;
 	wire [31:0] DataAdr;
 	wire MemWrite;
+	wire sw;
 	top dut(
 		.clk(clk),
 		.reset(reset),
 		.WriteDataM(WriteDataM),
 		.DataAdr(DataAdr),
-		.MemWrite(MemWrite)
+		.MemWrite(MemWrite),
+		.sw(sw)
 	);
 	initial begin
 		reset <= 1;
