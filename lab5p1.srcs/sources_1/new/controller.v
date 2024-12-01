@@ -86,7 +86,7 @@ module controller (
 	wire MemWriteE;
 	
 	output wire BranchTakenE; //BranchTakenE deberia pasar a ser input del predictor
-	//output wire BranchPred; //BranchPred deberia pasar a ser output del predictor
+	wire BranchPred; //BranchPred deberia pasar a ser output del predictor
 
 
 	// cond logic

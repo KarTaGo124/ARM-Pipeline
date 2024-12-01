@@ -37,13 +37,13 @@ module BranchPredictor(
 
     parameter [1:0] StronglyTaken = 2'b00;
     parameter [1:0] WeaklyTaken = 2'b01;
-    parameter [1:0] WeaklyNotTaken = 2'b10;
-    parameter [1:0] StronglyNotTaken = 2'b11;
+    parameter [1:0] StronglyNotTaken = 2'b10;
+    parameter [1:0] WeaklyNotTaken = 2'b11;
 
     always @(posedge clk or posedge reset)
     begin
         if (reset)
-            state <= StronglyTaken;
+            state <= StronglyNotTaken;
         else
             state <= nextState;
     end

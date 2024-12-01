@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="79.450 ns"></ZoomStartTime>
-      <ZoomEndTime time="113.262 ns"></ZoomEndTime>
-      <Cursor1Time time="101.539 ns"></Cursor1Time>
+      <ZoomStartTime time="22.380 ns"></ZoomStartTime>
+      <ZoomEndTime time="388.381 ns"></ZoomEndTime>
+      <Cursor1Time time="60.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="170"></NameColumnWidth>
-      <ValueColumnWidth column_width="165"></ValueColumnWidth>
+      <NameColumnWidth column_width="73"></NameColumnWidth>
+      <ValueColumnWidth column_width="98"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="72" />
+   <WVObjectSize size="54" />
    <wvobject fp_name="/testbench/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -37,12 +37,6 @@
    <wvobject fp_name="/testbench/dut/arm/dp/InstrD" type="array">
       <obj_property name="ElementShortName">InstrD[31:0]</obj_property>
       <obj_property name="ObjectShortName">InstrD[31:0]</obj_property>
-      <obj_property name="CustomSignalColor">#FFFF00</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/dut/arm/dp/RegSrcD" type="array">
-      <obj_property name="ElementShortName">RegSrcD[1:0]</obj_property>
-      <obj_property name="ObjectShortName">RegSrcD[1:0]</obj_property>
       <obj_property name="CustomSignalColor">#FFFF00</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
@@ -70,27 +64,11 @@
       <obj_property name="CustomSignalColor">#FFFF00</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
-   <wvobject fp_name="/testbench/dut/arm/dp/SrcAD" type="array">
-      <obj_property name="ElementShortName">SrcAD[31:0]</obj_property>
-      <obj_property name="ObjectShortName">SrcAD[31:0]</obj_property>
-      <obj_property name="CustomSignalColor">#FFFF00</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/dut/arm/dp/WriteDataD" type="array">
-      <obj_property name="ElementShortName">WriteDataD[31:0]</obj_property>
-      <obj_property name="ObjectShortName">WriteDataD[31:0]</obj_property>
-      <obj_property name="CustomSignalColor">#FFFF00</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-   </wvobject>
    <wvobject fp_name="/testbench/dut/arm/dp/PCPlus4F" type="array">
       <obj_property name="ElementShortName">PCPlus4F[31:0]</obj_property>
       <obj_property name="ObjectShortName">PCPlus4F[31:0]</obj_property>
       <obj_property name="CustomSignalColor">#FFFF00</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/dut/arm/dp/RegWriteW" type="logic">
-      <obj_property name="ElementShortName">RegWriteW</obj_property>
-      <obj_property name="ObjectShortName">RegWriteW</obj_property>
    </wvobject>
    <wvobject fp_name="/testbench/dut/arm/dp/ExtImmE" type="array">
       <obj_property name="ElementShortName">ExtImmE[31:0]</obj_property>
@@ -139,10 +117,6 @@
       <obj_property name="ObjectShortName">WA3E[3:0]</obj_property>
       <obj_property name="CustomSignalColor">#00FF00</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/dut/arm/c/MemWriteM" type="logic">
-      <obj_property name="ElementShortName">MemWriteM</obj_property>
-      <obj_property name="ObjectShortName">MemWriteM</obj_property>
    </wvobject>
    <wvobject fp_name="/testbench/dut/arm/dp/ALUOutM" type="array">
       <obj_property name="ElementShortName">ALUOutM[31:0]</obj_property>
@@ -332,68 +306,16 @@
       <obj_property name="ElementShortName">BranchTakenE</obj_property>
       <obj_property name="ObjectShortName">BranchTakenE</obj_property>
    </wvobject>
-   <wvobject fp_name="/testbench/dut/arm/c/cl/CondEx" type="logic">
-      <obj_property name="ElementShortName">CondEx</obj_property>
-      <obj_property name="ObjectShortName">CondEx</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/dut/arm/c/BranchD" type="logic">
-      <obj_property name="ElementShortName">BranchD</obj_property>
-      <obj_property name="ObjectShortName">BranchD</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/dut/arm/c/BranchE" type="logic">
-      <obj_property name="ElementShortName">BranchE</obj_property>
-      <obj_property name="ObjectShortName">BranchE</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/dut/arm/dp/pcmux2/d0" type="array">
-      <obj_property name="ElementShortName">d0[31:0]</obj_property>
-      <obj_property name="ObjectShortName">d0[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/dut/arm/dp/pcmux2/d1" type="array">
-      <obj_property name="ElementShortName">d1[31:0]</obj_property>
-      <obj_property name="ObjectShortName">d1[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/dut/arm/dp/pcmux2/s" type="logic">
-      <obj_property name="ElementShortName">s</obj_property>
-      <obj_property name="ObjectShortName">s</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/dut/arm/dp/pcmux2/y" type="array">
-      <obj_property name="ElementShortName">y[31:0]</obj_property>
-      <obj_property name="ObjectShortName">y[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/dut/arm/dp/ext/ImmSrc" type="array">
-      <obj_property name="ElementShortName">ImmSrc[1:0]</obj_property>
-      <obj_property name="ObjectShortName">ImmSrc[1:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/dut/arm/dp/ext/Instr" type="array">
-      <obj_property name="ElementShortName">Instr[23:0]</obj_property>
-      <obj_property name="ObjectShortName">Instr[23:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/dut/arm/dp/ext/ExtImm" type="array">
-      <obj_property name="ElementShortName">ExtImm[31:0]</obj_property>
-      <obj_property name="ObjectShortName">ExtImm[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/dut/arm/dp/ResultW" type="array">
-      <obj_property name="ElementShortName">ResultW[31:0]</obj_property>
-      <obj_property name="ObjectShortName">ResultW[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/dut/arm/c/MemtoRegM" type="logic">
-      <obj_property name="ElementShortName">MemtoRegM</obj_property>
-      <obj_property name="ObjectShortName">MemtoRegM</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/dut/arm/dp/ALUOutM" type="array">
-      <obj_property name="ElementShortName">ALUOutM[31:0]</obj_property>
-      <obj_property name="ObjectShortName">ALUOutM[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/dut/arm/hz/RegWriteM" type="logic">
-      <obj_property name="ElementShortName">RegWriteM</obj_property>
-      <obj_property name="ObjectShortName">RegWriteM</obj_property>
-   </wvobject>
-   <wvobject fp_name="/testbench/dut/arm/hz/RegWriteW" type="logic">
-      <obj_property name="ElementShortName">RegWriteW</obj_property>
-      <obj_property name="ObjectShortName">RegWriteW</obj_property>
-   </wvobject>
    <wvobject fp_name="/testbench/dut/arm/dp/rf/rf" type="array">
       <obj_property name="ElementShortName">rf[14:0][31:0]</obj_property>
       <obj_property name="ObjectShortName">rf[14:0][31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/c/cl/ALUFlags" type="array">
+      <obj_property name="ElementShortName">ALUFlags[3:0]</obj_property>
+      <obj_property name="ObjectShortName">ALUFlags[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/testbench/dut/arm/c/cl/NextFlags" type="array">
+      <obj_property name="ElementShortName">NextFlags[3:0]</obj_property>
+      <obj_property name="ObjectShortName">NextFlags[3:0]</obj_property>
    </wvobject>
 </wave_config>
