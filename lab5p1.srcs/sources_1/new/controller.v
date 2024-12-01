@@ -138,11 +138,12 @@ module controller (
 	);
 
 	assign ff_control_1_in = {PCSD, RegWD, MemtoRegD, MemWD, ALUControlD, BranchD, ALUSrcD, FlagWD, Instr[31:28], NextFlags};
-	flopr #(20) ff_control_1(
+	floprc #(20) ff_control_1(
 		.clk(clk),
-		.reset(BranchTakenE),
+		.reset(reset),
+		.clear(FlushE),
 		.d(ff_control_1_in),
-	   .q(ff_control_1_out)
+	   	.q(ff_control_1_out)
 	);
 
 	assign {PCSE, RegWE, MemtoRegE, MemWE, ALUControlE, BranchE, ALUSrcE, FlagWE, CondE, FlagsE} = ff_control_1_out;

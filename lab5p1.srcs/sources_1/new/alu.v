@@ -77,7 +77,7 @@ assign neg = ALUResult[31];
 assign zero = (ALUResult == 32'b0);
 assign carry = (ALUControl[1] == 1'b0) & sum[32];
 assign overflow = (ALUControl[1] ==1'b0) & ~(SrcA[31] ^ SrcB[31] ^ ALUControl[0]) & (SrcA[31] ^ sum[31]);
-//assign qflag = 
+assign qflag = (SrcA[31] == 0 & SrcB [31] == 0 & ALUResult[31] == 1) | (SrcA[31] == 1 & SrcB [31] == 1 & ALUResult[31] == 0);
 
 
 

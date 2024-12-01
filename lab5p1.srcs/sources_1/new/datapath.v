@@ -177,10 +177,11 @@ module datapath (
 		.y(PCPlus4F)
 	);
 
-	flopenr #(32) regfd(
+	flopenrc #(32) regfd(
 	   .clk(clk),
-	   .reset(0), //TODO Change to ~BranchPred
-	   .en(1),//-STALLD
+	   .reset(reset), 
+	   .en(~StallD),//-STALLD
+	   .clear(FlushD),//-FLUSHD
 	   .d(InstrF),  
 	   .q(InstrD)
 	   )
@@ -225,11 +226,12 @@ module datapath (
 	wire [3:0] instructAuxD;
 	assign instructAuxD = InstrD[15:12];
 
-	assign ff_DE_Dp_in = {RA1D, RA2D, SrcAD, WriteDataD, InstrD[15:12], ExtImmD};
+	assign ff_DE_Dp_in = {RA1D, RA2D, SrcAD, WriteDataD, instructAuxD, ExtImmD};
 
-	flopr #(108) ff_DE_Dp(
+	floprc #(108) ff_DE_Dp(
 		.clk(clk),
-		.reset(FlushE), //TODO Change to ~BranchPred
+		.reset(reset),
+		.clear(FlushE),
 		.d(ff_DE_Dp_in),
 		.q(ff_DE_Dp_out)
 	);
